@@ -1,0 +1,40 @@
+body {
+    background:whitesmoke;
+}
+
+header {
+    width:85%;
+    margin:25px auto;
+    text-align: center;
+}
+
+.flex-container {
+    display:flex;
+    justify-content: space-around;
+    margin:auto;
+    width:75%;
+}
+.container {
+    width:85%;
+    margin:auto;
+}
+
+.half-container {
+    min-width:350px;
+    background:white;
+    padding:15px;
+    margin:15px;
+    width:47%;
+    flex: 1 1 47%;
+    border:1px solid  #CCC;
+    border-radius:15px;
+}
+
+.btn-control {
+    margin:auto;
+    width:25%;
+}
+
+button {
+    margin:15px;
+}
