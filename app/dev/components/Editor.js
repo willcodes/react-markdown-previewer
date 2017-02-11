@@ -27,7 +27,7 @@ class Editor extends React.Component {
         let htmlFile = new File([marked(this.state.value)], 'markdown.html', {type: "text/plain;charset=utf-8"});
 
         return(
-            <div class="container">
+            <div className="container">
                 <div className = "flex-container">
                     <textarea className="half-container"rows="20" cols="50" value={this.state.value} onChange={event => this.setState({ value: event.target.value })}>
                     </textarea>
