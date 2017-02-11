@@ -31,10 +31,12 @@ header {
 }
 
 .btn-control {
-    margin:auto;
-    width:25%;
+    margin:15px auto;
+    width:350px;
 }
 
 button {
+    width:150px;
     margin:15px;
+    text-align: center;
 }
