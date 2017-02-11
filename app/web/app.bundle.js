@@ -9505,7 +9505,7 @@ var Editor = function (_React$Component) {
 
             return _react2.default.createElement(
                 'div',
-                { 'class': 'container' },
+                { className: 'container' },
                 _react2.default.createElement(
                     'div',
                     { className: 'flex-container' },
