@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // We point to our static assets
-app.use(express.static(publicPath));
+app.use('/', express.static(publicPath));
 
 
 app.post('/download', (req, res) => {

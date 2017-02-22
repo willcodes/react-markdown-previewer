@@ -6,7 +6,7 @@ class Editor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: "### Markdown Previewer \n ---- \n Hi, I made this so I can quickly write documentation using markdown at work, there are many other online examples on which I drew inspiration from, enjoy! \n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**"
+            value: this.props.foo
         }
     }
 
@@ -14,8 +14,9 @@ class Editor extends React.Component {
         fileSave.saveAs(file)
     }
 
-    render() {
+    
 
+    render() {
         let output = (value) => { 
             let parsedMarkdown = marked(value, {sanitize:true}); 
             return { 
