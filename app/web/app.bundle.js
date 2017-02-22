@@ -9507,7 +9507,7 @@ var Editor = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Editor.__proto__ || Object.getPrototypeOf(Editor)).call(this, props));
 
         _this.state = {
-            value: _this.props.foo
+            value: _this.props.initialText
         };
         return _this;
     }
@@ -23474,7 +23474,7 @@ var App = function (_React$Component) {
                 'div',
                 { className: 'app' },
                 _react2.default.createElement(_Header2.default, null),
-                _react2.default.createElement(_Editor2.default, { foo: text })
+                _react2.default.createElement(_Editor2.default, { initialText: text })
             );
         }
     }]);

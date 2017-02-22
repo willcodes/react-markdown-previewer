@@ -10,7 +10,7 @@ class App extends React.Component {
         return (
             <div className="app">
                 <Header />
-                <Editor foo={text} />
+                <Editor initialText={text} />
             </div>
         )
     }
