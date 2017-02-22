@@ -23456,14 +23456,20 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var text = "### Markdown Previewer \n ---- \n Hi, I made this so I can quickly write documentation using markdown at work, there are many other online examples on which I drew inspiration from, enjoy! \n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**";
-
 function getQuery() {
     var path = window.location.search;
     if (path.indexOf('?query=') === 0) {
         var id = path.split('?query=')[1];
-        console.log(id);
+        $.ajax({
+            url: '/' + id
+        }).then(function (res) {
+            console.log(res);
+            if (res !== '') {
+                return res;
+            }
+        });
     }
+    return "### Markdown Previewer \n ---- \n Hi, I made this so I can quickly write documentation using markdown at work, there are many other online examples on which I drew inspiration from, enjoy! \n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**";
 }
 
 var App = function (_React$Component) {
@@ -23482,7 +23488,7 @@ var App = function (_React$Component) {
                 'div',
                 { className: 'app' },
                 _react2.default.createElement(_Header2.default, null),
-                _react2.default.createElement(_Editor2.default, { initialText: text })
+                _react2.default.createElement(_Editor2.default, { initialText: getQuery() })
             );
         }
     }]);

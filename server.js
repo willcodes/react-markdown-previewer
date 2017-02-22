@@ -15,6 +15,10 @@ app.use(bodyParser.json());
 // We point to our static assets
 app.use('/', express.static(publicPath));
 
+app.get('/:id', (req,res) => {
+  console.log(req.params.id);
+  res.send('foo');
+});
 
 app.post('/download', (req, res) => {
 
