@@ -23458,6 +23458,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var text = "### Markdown Previewer \n ---- \n Hi, I made this so I can quickly write documentation using markdown at work, there are many other online examples on which I drew inspiration from, enjoy! \n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**";
 
+function getQuery() {
+    var path = window.location.search;
+    if (path.indexOf('?query=') === 0) {
+        var id = path.split('?query=')[1];
+        console.log(id);
+    }
+}
+
 var App = function (_React$Component) {
     _inherits(App, _React$Component);
 
