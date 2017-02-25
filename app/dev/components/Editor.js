@@ -47,6 +47,32 @@ class Editor extends React.Component {
         fileSave.saveAs(file)
     }
 
+    _saveDocument() {
+        let shouldSave = window.location.search.indexOf('?query=');
+        if(shouldSave !== -1) {
+            console.log(window.location.search.indexOf('?query='))
+            let docName = window.location.search.split('?query=')[1];
+
+            let request = new Request('/save', {
+                method: 'POST', 
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                }),
+                body:JSON.stringify({ 
+                    docName,
+                    docContent:this.state.value
+                })
+            });
+            fetch(request).then(function(res) { 
+                console.log(res);
+            });
+        }
+        else {
+            console.log('err');
+            window.location = '?query='+Math.random().toString(36).substring(7);
+        }
+    }
+
     render() {
 
         let output = (value) => {
@@ -72,6 +98,7 @@ class Editor extends React.Component {
                 <div className="btn-control">
                     <button type="" onClick={() => { this.saveToFile(markdownFile) }}> Save as markdown </button>
                     <button type="" onClick={() => { this.saveToFile(htmlFile) }}> Save as html</button>
+                    <button type="" onClick={() => { this._saveDocument() }}> Save&Share</button>
                 </div>
             </div>
         );

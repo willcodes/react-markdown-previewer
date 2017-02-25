@@ -34,7 +34,15 @@ app.get('/:id', (req,res) => {
 });
 
 app.post('/save', (req, res) => {
-  console.log(req.body.docToSave);
+
+  client.set(req.body.docName, req.body.docContent,(err, reply) => {
+    if(err) {
+      res.send(err)
+    } 
+    else {
+      res.send(reply);
+    }
+  })
 });
 
 // And run the server
