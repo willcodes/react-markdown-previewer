@@ -1,6 +1,6 @@
 "use strict";
 
-let webpack = require("webpack");
+let webpack = require('webpack');
 let path = require("path");
 
 let dev = path.resolve(__dirname, "app/dev");
@@ -24,7 +24,7 @@ let config = {
   devServer: {
     historyApiFallback: true,
     contentBase: './'
-  }
+  },
 };
 
 module.exports = config;

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TextData from './components/TextData';
+// import TextData from './components/TextData';
 import Editor from './components/Editor';
 
 class App extends React.Component {

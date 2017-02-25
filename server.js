@@ -10,6 +10,9 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
+app.get('/favicon.ico', function (req, res) {
+});
+
 app.use(bodyParser.json());
 
 // We point to our static assets
