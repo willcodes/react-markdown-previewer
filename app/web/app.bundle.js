@@ -6778,18 +6778,27 @@ var Editor = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
+            var defaultText = "### Markdown Previewer \n ---- \n Hi, I made this so I can quickly write documentation using markdown at work, there are many other online examples on which I drew inspiration from, enjoy! \n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**";
+
             if (window.location.search.indexOf('?query=') > -1) {
                 var id = window.location.search.split('?query=')[1];
                 fetch('/' + id).then(function (res) {
                     return res.text();
                 }).then(function (myRes) {
-                    _this2.setState({
-                        value: myRes
-                    });
+                    console.log(myRes);
+                    if (myRes !== '') {
+                        _this2.setState({
+                            value: myRes
+                        });
+                    } else {
+                        _this2.setState({
+                            value: defaultText
+                        });
+                    }
                 });
             } else {
                 this.setState({
-                    value: "### Markdown Previewer \n ---- \n Hi, I made this so I can quickly write documentation using markdown at work, there are many other online examples on which I drew inspiration from, enjoy! \n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**"
+                    value: defaultText
                 });
             }
         }

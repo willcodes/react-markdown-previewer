@@ -2,6 +2,8 @@ const express = require('express'),
       path = require('path'),
       fs = require('fs'),
       bodyParser = require('body-parser'),
+      redis = require('redis'),
+      client = redis.createClient(),
       app = express(),
       port = process.env.PORT || 3000,
       publicPath = path.resolve(__dirname);
@@ -19,12 +21,20 @@ app.use(bodyParser.json());
 app.use('/', express.static(publicPath));
 
 app.get('/:id', (req,res) => {
-  console.log(req.params.id);
-  res.send('foo');
+  let documentKey = req.params.id;
+  client.get(documentKey, (err, reply) => {
+    if(reply) {
+      console.log(reply);
+      res.send(reply);
+    }
+    else {
+      res.send("")
+    }
+  })
 });
 
-app.post('/download', (req, res) => {
-
+app.post('/save', (req, res) => {
+  console.log(req.body.docToSave);
 });
 
 // And run the server

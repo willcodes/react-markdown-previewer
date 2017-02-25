@@ -13,21 +13,31 @@ class Editor extends React.Component {
     }
     
     componentDidMount() {
+
+        let defaultText = "### Markdown Previewer \n ---- \n Hi, I made this so I can quickly write documentation using markdown at work, there are many other online examples on which I drew inspiration from, enjoy! \n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**";
         
         if (window.location.search.indexOf('?query=') > -1) {
             var id = window.location.search.split('?query=')[1];
             fetch('/' + id).then((res) => {
                 return res.text();
             }).then((myRes) => {
-                this.setState({
-                    value: myRes
-                })
+                console.log(myRes)
+                if(myRes!== '') {
+                    this.setState({
+                        value: myRes
+                    })
+                }
+                else {
+                    this.setState({
+                        value: defaultText
+                    })                    
+                }
             })
         }
 
         else {
             this.setState({
-                value: "### Markdown Previewer \n ---- \n Hi, I made this so I can quickly write documentation using markdown at work, there are many other online examples on which I drew inspiration from, enjoy! \n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**"
+                value: defaultText
             })
         }
     }
