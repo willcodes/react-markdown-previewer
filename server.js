@@ -5,7 +5,7 @@ const express = require('express'),
       redis = require('redis'),
       client = redis.createClient(),
       app = express(),
-      port = process.env.PORT || 3000,
+      port = process.env.PORT || 3003,
       publicPath = path.resolve(__dirname);
 
 app.use(bodyParser.urlencoded({
