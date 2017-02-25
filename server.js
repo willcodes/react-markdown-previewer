@@ -20,6 +20,7 @@ app.use(bodyParser.json());
 // We point to our static assets
 app.use('/', express.static(publicPath));
 
+//endpoint to get get key based on query string
 app.get('/:id', (req,res) => {
   let documentKey = req.params.id;
   client.get(documentKey, (err, reply) => {
@@ -33,6 +34,7 @@ app.get('/:id', (req,res) => {
   })
 });
 
+//endpoint to save to redis
 app.post('/save', (req, res) => {
 
   client.set(req.body.docName, req.body.docContent,(err, reply) => {

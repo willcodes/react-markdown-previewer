@@ -9488,10 +9488,11 @@ var Editor = function (_React$Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
-            var defaultText = "### Markdown Previewer \n ---- \n Hi, I made this so I can quickly write documentation using markdown at work, there are many other online examples on which I drew inspiration from, enjoy! \n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**";
+            var defaultText = "## Quick Guide\n---\n>Instructions:\n>1. Type markdown on the left.\n2. View markdown on the right.\n3. Save to disk or online for editing later.\n\n**Saving  Online**:\n\nFiles are stored online, however anyone with the link can access them. This application is meant for quick writing and sharing, not a cloud based storage solution.\n\nCopy the URL after you hit *SAVE ONLINE* to share or edit from another computer. \n\n**Learn More**:\n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**\n\n**Built with the help of:**\n- Reactjs\n- Nodejs\n- Markedjs\n- Redis\n- [Marked Custom Styles](https://github.com/ttscoff/MarkedCustomStyles)";
 
             if (window.location.search.indexOf('?query=') > -1) {
                 var id = window.location.search.split('?query=')[1];
+
                 fetch('/' + id).then(function (res) {
                     return res.text();
                 }).then(function (myRes) {
@@ -9512,11 +9513,17 @@ var Editor = function (_React$Component) {
                 });
             }
         }
+
+        //uses filesave package
+
     }, {
-        key: 'saveToFile',
-        value: function saveToFile(file) {
+        key: '_saveToFile',
+        value: function _saveToFile(file) {
             _fileSaver2.default.saveAs(file);
         }
+
+        //save to redis -> maybe should abstract this somehow
+
     }, {
         key: '_saveDocument',
         value: function _saveDocument() {
@@ -9535,12 +9542,30 @@ var Editor = function (_React$Component) {
                         docContent: this.state.value
                     })
                 });
+
                 fetch(request).then(function (res) {
                     console.log(res);
+                    alert('saved homie, cheaaaa');
                 });
             } else {
-                console.log('err');
-                window.location = '?query=' + Math.random().toString(36).substring(7);
+
+                var randomHash = Math.random().toString(36).substring(7);
+
+                var _request = new Request('/save', {
+                    method: 'POST',
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    }),
+                    body: JSON.stringify({
+                        docName: randomHash,
+                        docContent: this.state.value
+                    })
+                });
+
+                fetch(_request).then(function (res) {
+                    window.location = '?query=' + randomHash;
+                    alert("copy the url!");
+                });
             }
         }
     }, {
@@ -9548,59 +9573,75 @@ var Editor = function (_React$Component) {
         value: function render() {
             var _this3 = this;
 
+            //returns html after marked.js package parses
             var output = function output(value) {
                 var parsedMarkdown = (0, _marked2.default)(value, { sanitize: true });
                 return {
                     __html: parsedMarkdown
                 };
             };
-
+            //md and html files using filesave
             var markdownFile = new File([this.state.value], 'markdown.md', { type: "text/plain;charset=utf-8" });
             var htmlFile = new File([(0, _marked2.default)(this.state.value)], 'markdown.html', { type: "text/plain;charset=utf-8" });
 
             return _react2.default.createElement(
-                'div',
-                { className: 'container' },
+                'main',
+                null,
                 _react2.default.createElement(
-                    'header',
+                    'nav',
                     null,
                     _react2.default.createElement(
-                        'h1',
+                        'a',
+                        { href: '/', className: 'logo' },
+                        'Markdown Pad'
+                    ),
+                    _react2.default.createElement(
+                        'span',
                         null,
-                        'Markdown Previewer'
+                        'A quick solution to rapidly write and save markdown.'
+                    ),
+                    _react2.default.createElement(
+                        'ul',
+                        null,
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            _react2.default.createElement(
+                                'a',
+                                { href: '#', onClick: function onClick() {
+                                        _this3._saveToFile(markdownFile);
+                                    } },
+                                'save as markdown'
+                            ),
+                            _react2.default.createElement(
+                                'a',
+                                { href: '#', onClick: function onClick() {
+                                        _this3._saveToFile(htmlFile);
+                                    } },
+                                'save as html'
+                            ),
+                            _react2.default.createElement(
+                                'a',
+                                { href: '#', onClick: function onClick() {
+                                        _this3._saveDocument();
+                                    } },
+                                'save online'
+                            )
+                        )
                     )
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'flex-container' },
-                    _react2.default.createElement('textarea', { className: 'half-container', rows: '20', cols: '50', value: this.state.value, onChange: function onChange(event) {
-                            return _this3.setState({ value: event.target.value });
-                        } }),
-                    _react2.default.createElement('div', { className: 'half-container', dangerouslySetInnerHTML: output(this.state.value) })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'btn-control' },
+                    { className: 'container' },
                     _react2.default.createElement(
-                        'button',
-                        { type: '', onClick: function onClick() {
-                                _this3.saveToFile(markdownFile);
-                            } },
-                        ' Save as markdown '
-                    ),
-                    _react2.default.createElement(
-                        'button',
-                        { type: '', onClick: function onClick() {
-                                _this3.saveToFile(htmlFile);
-                            } },
-                        ' Save as html'
-                    ),
-                    _react2.default.createElement(
-                        'button',
-                        { type: '', onClick: function onClick() {
-                                _this3._saveDocument();
-                            } },
-                        ' Save&Share'
+                        'div',
+                        { className: 'flex-container' },
+                        _react2.default.createElement('textarea', { className: 'half-container', rows: '20', cols: '50',
+                            value: this.state.value,
+                            onChange: function onChange(event) {
+                                return _this3.setState({ value: event.target.value });
+                            } }),
+                        _react2.default.createElement('div', { className: 'half-container', dangerouslySetInnerHTML: output(this.state.value) })
                     )
                 )
             );
@@ -23392,8 +23433,6 @@ module.exports = g;
 "use strict";
 
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(52);
 
 var _react2 = _interopRequireDefault(_react);
@@ -23408,38 +23447,8 @@ var _Editor2 = _interopRequireDefault(_Editor);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+_reactDom2.default.render(_react2.default.createElement(_Editor2.default, null), document.getElementById("app"));
 // import TextData from './components/TextData';
-
-
-var App = function (_React$Component) {
-    _inherits(App, _React$Component);
-
-    function App() {
-        _classCallCheck(this, App);
-
-        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
-    }
-
-    _createClass(App, [{
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                { className: 'app' },
-                _react2.default.createElement(_Editor2.default, null)
-            );
-        }
-    }]);
-
-    return App;
-}(_react2.default.Component);
-
-_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById("app"));
 
 /***/ })
 /******/ ]);
