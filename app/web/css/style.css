@@ -78,3 +78,19 @@ button {
     margin:15px;
     text-align: center;
 }
+
+
+@media all and (max-width:800px) {
+    .saveButtons, .tagline {
+        display:none;
+    }
+}
+
+@media all and (max-width:480px) {
+    .half-container {
+        width:100%;
+    }
+    .flex-container {
+        display:block;
+    }
+}

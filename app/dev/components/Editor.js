@@ -14,7 +14,7 @@ class Editor extends React.Component {
     
     componentDidMount() {
 
-        let defaultText = "## Quick Guide\n---\n>Instructions:\n>1. Type markdown on the left.\n2. View markdown on the right.\n3. Save to disk or online for editing later.\n\n**Saving  Online**:\n\nFiles are stored online, however anyone with the link can access them. This application is meant for quick writing and sharing, not a cloud based storage solution.\n\nCopy the URL after you hit *SAVE ONLINE* to share or edit from another computer. \n\n**Learn More**:\n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**\n\n**Built with the help of:**\n- Reactjs\n- Nodejs\n- Markedjs\n- Redis\n- [Marked Custom Styles](https://github.com/ttscoff/MarkedCustomStyles)";
+        let defaultText = "## Quick Guide\n---\n>Instructions:\n>1. Type markdown on the left.\n2. View markup on the right.\n3. Save to disk or online for editing later.\n\n**Saving  Online**:\n\nFiles are stored online, however anyone with the link can access them. This application is meant for quick writing and sharing, not a cloud based storage solution.\n\nCopy the URL after you hit *SAVE ONLINE* to share or edit from another computer. \n\n**Learn More**:\n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**\n\n**Built with the help of:**\n- Reactjs\n- Nodejs\n- Markedjs\n- Redis\n- [Marked Custom Styles](https://github.com/ttscoff/MarkedCustomStyles)";
         
         if (window.location.search.indexOf('?query=') > -1) {
             var id = window.location.search.split('?query=')[1];
@@ -115,22 +115,24 @@ class Editor extends React.Component {
                     <a href="/" className="logo">
                         Markdown Pad
                     </a>
-                    <span>
+                    <span className = "tagline">
                         A quick solution to rapidly write and save markdown.
                     </span>
-                    <ul>
+                    <ul className="saveButtons">
                         <li>
                             <a href="#" onClick={() => { this._saveToFile(markdownFile) }}>save as markdown</a>
                             <a href="#" onClick={() => { this._saveToFile(htmlFile) }}>save as html</a>
                             <a href="#" onClick={() => { this._saveDocument() }}>save online</a>
                         </li>
                     </ul>
+                    
                 </nav>
                 <div className="container">
                     <div className="flex-container">
                         <textarea className="half-container" rows="20" cols="50" 
                             value={this.state.value} 
-                            onChange={event => this.setState({ value: event.target.value })}>
+                            onChange={event => this.setState({ value: event.target.value })}
+                        >
                         </textarea>
                         <div className="half-container" dangerouslySetInnerHTML={output(this.state.value)}></div>
                     </div>
