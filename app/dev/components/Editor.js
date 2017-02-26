@@ -127,7 +127,7 @@ class Editor extends React.Component {
         return (
             <main>
             <Modal modalText={this.state.modalText} />
-                <nav>
+                <nav className="nav">
                     <a href="/" className="logo">
                         Markdown Pad
                     </a>

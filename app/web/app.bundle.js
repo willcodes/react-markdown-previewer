@@ -9609,7 +9609,7 @@ var Editor = function (_React$Component) {
                 _react2.default.createElement(_Modal2.default, { modalText: this.state.modalText }),
                 _react2.default.createElement(
                     'nav',
-                    null,
+                    { className: 'nav' },
                     _react2.default.createElement(
                         'a',
                         { href: '/', className: 'logo' },
