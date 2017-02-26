@@ -102,8 +102,9 @@ class Editor extends React.Component {
             });
 
             fetch(request).then(function(res) { 
+                
                 window.location = '?query=' + randomHash;
-                alert("copy the url!");
+
             });
 
 

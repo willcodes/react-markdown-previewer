@@ -9582,8 +9582,8 @@ var Editor = function (_React$Component) {
                 });
 
                 fetch(_request).then(function (res) {
+
                     window.location = '?query=' + randomHash;
-                    alert("copy the url!");
                 });
             }
         }
