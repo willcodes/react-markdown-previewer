@@ -125,7 +125,6 @@ class Editor extends React.Component {
                             <a href="#" onClick={() => { this._saveDocument() }}>save online</a>
                         </li>
                     </ul>
-                    
                 </nav>
                 <div className="container">
                     <div className="flex-container">
