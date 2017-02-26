@@ -33,6 +33,11 @@ nav a:hover {
     text-decoration: none;    
 }
 
+nav a:visited, nav a:focus {
+    color:white;
+    text-decoration: none;
+}
+
 span {
     margin-left:10px;
     align-self: center;
