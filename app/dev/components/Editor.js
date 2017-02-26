@@ -1,6 +1,7 @@
 //main logic for editor lives here.
 
 import React from 'react';
+import Modal from './Modal';
 import marked from 'marked';
 import fileSave from 'file-saver';
 
@@ -8,7 +9,8 @@ class Editor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: ''
+            value: '',
+            modelText:''
         }
     }
     
@@ -43,6 +45,14 @@ class Editor extends React.Component {
             })
         }
     }
+    _showModal() {
+        let modal = document.getElementById('popupModal');
+        modal.style.opacity = '1';
+
+        document.onclick = () => {
+            modal.style.opacity = 0;
+        }
+    }
     
     //uses filesave package
     _saveToFile(file) {
@@ -69,8 +79,12 @@ class Editor extends React.Component {
 
             fetch(request).then(function(res) { 
                 console.log(res);
-                alert('saved homie, cheaaaa')
             });
+            //this should be called after fetch but could not figure out how to bind 'this'
+            this.setState({
+                modalText: "Your document has been saved. Copy the link in the URL to view/edit later."
+            })
+            this._showModal();
         }
         else {
             
@@ -111,6 +125,7 @@ class Editor extends React.Component {
 
         return (
             <main>
+            <Modal modalText={this.state.modalText} />
                 <nav>
                     <a href="/" className="logo">
                         Markdown Pad

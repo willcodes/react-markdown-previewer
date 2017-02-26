@@ -47,6 +47,31 @@ header {
     text-align: left;
 }
 
+#popupModal {
+    position:absolute;
+    width:350px;
+    top:25%;
+    transform:translateY(-50%);
+    left:50%;
+    transform:translateX(-50%);
+    z-index: 50;
+    opacity:0;
+    padding:15px 20px;
+    font-size:20px;
+    color:white;
+    background:#212121;
+    border:1px solid #212121;
+    border-radius:2px;
+    border-bottom:4px solid #424242;
+    text-align: center;
+    box-shadow:1px 2px 2px 1px #424242;
+    transition:0.35s all ease;
+}
+#popupModal p {
+    padding:0;
+    margin:0;
+}
+
 
 .flex-container {
     display:flex;

@@ -9453,6 +9453,10 @@ var _react = __webpack_require__(52);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Modal = __webpack_require__(185);
+
+var _Modal2 = _interopRequireDefault(_Modal);
+
 var _marked = __webpack_require__(97);
 
 var _marked2 = _interopRequireDefault(_marked);
@@ -9478,7 +9482,8 @@ var Editor = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Editor.__proto__ || Object.getPrototypeOf(Editor)).call(this, props));
 
         _this.state = {
-            value: ''
+            value: '',
+            modelText: ''
         };
         return _this;
     }
@@ -9513,6 +9518,16 @@ var Editor = function (_React$Component) {
                 });
             }
         }
+    }, {
+        key: '_showModal',
+        value: function _showModal() {
+            var modal = document.getElementById('popupModal');
+            modal.style.opacity = '1';
+
+            document.onclick = function () {
+                modal.style.opacity = 0;
+            };
+        }
 
         //uses filesave package
 
@@ -9545,8 +9560,12 @@ var Editor = function (_React$Component) {
 
                 fetch(request).then(function (res) {
                     console.log(res);
-                    alert('saved homie, cheaaaa');
                 });
+                //this should be called after fetch but could not figure out how to bind 'this'
+                this.setState({
+                    modalText: "Your document has been saved. Copy the link in the URL to view/edit later."
+                });
+                this._showModal();
             } else {
 
                 var randomHash = Math.random().toString(36).substring(7);
@@ -9587,6 +9606,7 @@ var Editor = function (_React$Component) {
             return _react2.default.createElement(
                 'main',
                 null,
+                _react2.default.createElement(_Modal2.default, { modalText: this.state.modalText }),
                 _react2.default.createElement(
                     'nav',
                     null,
@@ -23450,6 +23470,61 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _reactDom2.default.render(_react2.default.createElement(_Editor2.default, null), document.getElementById("app"));
 // import TextData from './components/TextData';
+
+/***/ }),
+/* 184 */,
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(52);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Modal = function (_React$Component) {
+    _inherits(Modal, _React$Component);
+
+    function Modal(props) {
+        _classCallCheck(this, Modal);
+
+        return _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
+    }
+
+    _createClass(Modal, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { id: "popupModal" },
+                _react2.default.createElement(
+                    "p",
+                    null,
+                    this.props.modalText
+                )
+            );
+        }
+    }]);
+
+    return Modal;
+}(_react2.default.Component);
+
+exports.default = Modal;
 
 /***/ })
 /******/ ]);
