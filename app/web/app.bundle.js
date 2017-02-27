@@ -9632,14 +9632,22 @@ var Editor = function (_React$Component) {
                                         _this3._saveToFile(markdownFile);
                                     } },
                                 'save as markdown'
-                            ),
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
                             _react2.default.createElement(
                                 'a',
                                 { href: '#', onClick: function onClick() {
                                         _this3._saveToFile(htmlFile);
                                     } },
                                 'save as html'
-                            ),
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
                             _react2.default.createElement(
                                 'a',
                                 { href: '#', onClick: function onClick() {

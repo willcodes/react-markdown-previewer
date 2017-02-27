@@ -110,7 +110,10 @@ button {
 
 
 @media all and (max-width:800px) {
-    .saveButtons, .tagline {
+    .tagline {
+        display:none;
+    }
+    .saveButtons li:nth-child(1), .saveButtons li:nth-child(2) {
         display:none;
     }
 }

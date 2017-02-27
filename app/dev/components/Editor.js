@@ -137,7 +137,11 @@ class Editor extends React.Component {
                     <ul className="saveButtons">
                         <li>
                             <a href="#" onClick={() => { this._saveToFile(markdownFile) }}>save as markdown</a>
+                        </li>
+                        <li>
                             <a href="#" onClick={() => { this._saveToFile(htmlFile) }}>save as html</a>
+                        </li>
+                        <li>
                             <a href="#" onClick={() => { this._saveDocument() }}>save online</a>
                         </li>
                     </ul>
