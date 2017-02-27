@@ -108,6 +108,10 @@ button {
     text-align: center;
 }
 
+.saveButtons {
+    display:flex;
+}
+
 
 @media all and (max-width:800px) {
     .tagline {
