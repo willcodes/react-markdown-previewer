@@ -1,5 +1,7 @@
+
 body {
     background:whitesmoke;
+    padding-top:50px;
 }
 
 .nav {
@@ -11,6 +13,8 @@ body {
     border-bottom:3px solid #424242;
     font-size:20px;
     align-items:center;
+    position: fixed;
+    margin-top:-50px;
 }
 
 .nav ul {
@@ -45,11 +49,6 @@ span {
     color:#90CAF9;
 }
 
-
-header {
-    margin:25px 15px;
-    text-align: left;
-}
 
 #popupModal {
     position:absolute;
