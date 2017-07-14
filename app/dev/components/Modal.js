@@ -6,7 +6,9 @@ class Modal extends React.Component {
     }
     render() {
         return(
-            <div id="popupModal">
+            <div 
+                id="popupModal"
+                className={this.props.modalClass}>
                 <p>{this.props.modalText}</p>
             </div>
         )

@@ -8,9 +8,12 @@ import fileSave from 'file-saver';
 class Editor extends React.Component {
     constructor(props) {
         super(props);
+        this._handleKeyDown = this._handleKeyDown.bind(this);
+
         this.state = {
             value: '',
-            modelText:''
+            modelText:'',
+            modalShouldShow:false
         }
     }
     
@@ -24,7 +27,6 @@ class Editor extends React.Component {
             fetch('/' + id).then((res) => {
                 return res.text();
             }).then((myRes) => {
-                console.log(myRes)
                 if(myRes!== '') {
                     this.setState({
                         value: myRes
@@ -45,12 +47,24 @@ class Editor extends React.Component {
             })
         }
     }
+
+    _handleKeyDown(event) {
+        let charCode = String.fromCharCode(event.which).toLocaleLowerCase();
+        if((event.ctrlKey && charCode === 's') || (event.metaKey && charCode === 'c')) {
+            event.preventDefault();
+            this._saveDocument();
+        }
+    }
+
     _showModal() {
-        let modal = document.getElementById('popupModal');
-        modal.style.opacity = '1';
+        this.setState({
+            modalShouldShow:true
+        })
 
         document.onclick = () => {
-            modal.style.opacity = 0;
+            this.setState({
+                modalShouldShow:false
+            })
         }
     }
     
@@ -101,14 +115,11 @@ class Editor extends React.Component {
                 })
             });
 
-            fetch(request).then(function(res) { 
+            fetch(request).then((res) => { 
                 
                 window.location = '?query=' + randomHash;
 
             });
-
-
-
         }
     }
 
@@ -126,7 +137,10 @@ class Editor extends React.Component {
 
         return (
             <main>
-            <Modal modalText={this.state.modalText} />
+            <Modal 
+                modalText={this.state.modalText} 
+                modalClass={this.state.modalShouldShow ? "modalShow" : null}
+            />
                 <nav className="nav">
                     <a href="/" className="logo">
                         Markdown Pad
@@ -149,7 +163,8 @@ class Editor extends React.Component {
                 <div className="container">
                     <div className="flex-container">
                         <textarea className="half-container" rows="20" cols="50" 
-                            value={this.state.value} 
+                            value={this.state.value}
+                            onKeyDown={event=>this._handleKeyDown(event)} 
                             onChange={event => this.setState({ value: event.target.value })}
                         >
                         </textarea>
