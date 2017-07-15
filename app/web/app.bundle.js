@@ -9763,7 +9763,7 @@ module.exports = getIteratorFn;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -9793,232 +9793,249 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //main logic for editor lives here.
 
 var Editor = function (_React$Component) {
-    _inherits(Editor, _React$Component);
+  _inherits(Editor, _React$Component);
 
-    function Editor(props) {
-        _classCallCheck(this, Editor);
+  function Editor(props) {
+    _classCallCheck(this, Editor);
 
-        var _this = _possibleConstructorReturn(this, (Editor.__proto__ || Object.getPrototypeOf(Editor)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Editor.__proto__ || Object.getPrototypeOf(Editor)).call(this, props));
 
-        _this._handleKeyDown = _this._handleKeyDown.bind(_this);
+    _this._handleKeyDown = _this._handleKeyDown.bind(_this);
 
-        _this.state = {
-            value: '',
-            modelText: '',
-            modalShouldShow: false
-        };
-        return _this;
+    _this.state = {
+      value: "",
+      modelText: "",
+      modalShouldShow: false
+    };
+    return _this;
+  }
+
+  _createClass(Editor, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var defaultText = "## Quick Guide\n---\n>Instructions:\n>1. Type markdown on the left.\n2. View markup on the right.\n3. Save to disk or online for editing later.\n\n**Saving  Online**:\n\nFiles are stored online, however anyone with the link can access them. This application is meant for quick writing and sharing, not a cloud based storage solution.\n\nCopy the URL after you hit *SAVE ONLINE* to share or edit from another computer. \n\n**Learn More**:\n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**\n\n**Built with the help of:**\n- Reactjs\n- Nodejs\n- Markedjs\n- Redis\n- [Marked Custom Styles](https://github.com/ttscoff/MarkedCustomStyles)";
+
+      if (window.location.search.indexOf("?query=") > -1) {
+        var id = window.location.search.split("?query=")[1];
+
+        fetch("/" + id).then(function (res) {
+          return res.text();
+        }).then(function (myRes) {
+          if (myRes !== "") {
+            _this2.setState({
+              value: myRes
+            });
+          } else {
+            _this2.setState({
+              value: defaultText
+            });
+          }
+        });
+      } else {
+        this.setState({
+          value: defaultText
+        });
+      }
+    }
+  }, {
+    key: "_handleKeyDown",
+    value: function _handleKeyDown(event) {
+      var charCode = String.fromCharCode(event.which).toLocaleLowerCase();
+      if (event.ctrlKey && charCode === "s" || event.metaKey && charCode === "c") {
+        event.preventDefault();
+        this._saveDocument();
+      }
+    }
+  }, {
+    key: "_showModal",
+    value: function _showModal() {
+      var _this3 = this;
+
+      this.setState({
+        modalShouldShow: true
+      });
+
+      document.onclick = function () {
+        _this3.setState({
+          modalShouldShow: false
+        });
+      };
     }
 
-    _createClass(Editor, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
+    //uses filesave package
 
-            var defaultText = "## Quick Guide\n---\n>Instructions:\n>1. Type markdown on the left.\n2. View markup on the right.\n3. Save to disk or online for editing later.\n\n**Saving  Online**:\n\nFiles are stored online, however anyone with the link can access them. This application is meant for quick writing and sharing, not a cloud based storage solution.\n\nCopy the URL after you hit *SAVE ONLINE* to share or edit from another computer. \n\n**Learn More**:\n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**\n\n**Built with the help of:**\n- Reactjs\n- Nodejs\n- Markedjs\n- Redis\n- [Marked Custom Styles](https://github.com/ttscoff/MarkedCustomStyles)";
+  }, {
+    key: "_saveToFile",
+    value: function _saveToFile(file) {
+      _fileSaver2.default.saveAs(file);
+    }
 
-            if (window.location.search.indexOf('?query=') > -1) {
-                var id = window.location.search.split('?query=')[1];
+    //save to redis -> maybe should abstract this somehow
 
-                fetch('/' + id).then(function (res) {
-                    return res.text();
-                }).then(function (myRes) {
-                    if (myRes !== '') {
-                        _this2.setState({
-                            value: myRes
-                        });
-                    } else {
-                        _this2.setState({
-                            value: defaultText
-                        });
-                    }
-                });
-            } else {
-                this.setState({
-                    value: defaultText
-                });
-            }
-        }
-    }, {
-        key: '_handleKeyDown',
-        value: function _handleKeyDown(event) {
-            var charCode = String.fromCharCode(event.which).toLocaleLowerCase();
-            if (event.ctrlKey && charCode === 's' || event.metaKey && charCode === 'c') {
-                event.preventDefault();
-                this._saveDocument();
-            }
-        }
-    }, {
-        key: '_showModal',
-        value: function _showModal() {
-            var _this3 = this;
+  }, {
+    key: "_saveDocument",
+    value: function _saveDocument() {
+      var shouldSave = window.location.search.indexOf("?query=");
+      if (shouldSave !== -1) {
+        console.log(window.location.search.indexOf("?query="));
+        var docName = window.location.search.split("?query=")[1];
 
-            this.setState({
-                modalShouldShow: true
-            });
+        var request = new Request("/save", {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json"
+          }),
+          body: JSON.stringify({
+            docName: docName,
+            docContent: this.state.value
+          })
+        });
 
-            document.onclick = function () {
-                _this3.setState({
-                    modalShouldShow: false
-                });
-            };
-        }
+        fetch(request).then(function (res) {
+          console.log(res);
+        });
+        //this should be called after fetch but could not figure out how to bind 'this'
+        this.setState({
+          modalText: "Your document has been saved."
+        });
+        this._showModal();
+      } else {
+        var randomHash = Math.random().toString(36).substring(7);
 
-        //uses filesave package
+        var _request = new Request("/save", {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json"
+          }),
+          body: JSON.stringify({
+            docName: randomHash,
+            docContent: this.state.value
+          })
+        });
 
-    }, {
-        key: '_saveToFile',
-        value: function _saveToFile(file) {
-            _fileSaver2.default.saveAs(file);
-        }
+        fetch(_request).then(function (res) {
+          window.location = "?query=" + randomHash;
+        });
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this4 = this;
 
-        //save to redis -> maybe should abstract this somehow
+      //returns html after marked.js package parses
+      var output = function output(value) {
+        var parsedMarkdown = (0, _marked2.default)(value, { sanitize: true });
+        return {
+          __html: parsedMarkdown
+        };
+      };
+      //md and html files using filesave
+      var markdownFile = new File([this.state.value], "markdown.md", {
+        type: "text/plain;charset=utf-8"
+      });
+      var htmlFile = new File([(0, _marked2.default)(this.state.value)], "markdown.html", {
+        type: "text/plain;charset=utf-8"
+      });
 
-    }, {
-        key: '_saveDocument',
-        value: function _saveDocument() {
-            var shouldSave = window.location.search.indexOf('?query=');
-            if (shouldSave !== -1) {
-                console.log(window.location.search.indexOf('?query='));
-                var docName = window.location.search.split('?query=')[1];
+      return _react2.default.createElement(
+        "main",
+        null,
+        _react2.default.createElement(_Modal2.default, {
+          modalText: this.state.modalText,
+          modalClass: this.state.modalShouldShow ? "modalShow" : null
+        }),
+        _react2.default.createElement(
+          "nav",
+          { className: "nav" },
+          _react2.default.createElement(
+            "a",
+            { href: "/", className: "logo" },
+            "Markdown Pad"
+          ),
+          _react2.default.createElement(
+            "span",
+            { className: "tagline" },
+            "A quick solution to rapidly write and save markdown."
+          ),
+          _react2.default.createElement(
+            "ul",
+            { className: "saveButtons" },
+            _react2.default.createElement(
+              "li",
+              null,
+              _react2.default.createElement(
+                "a",
+                {
+                  href: "#",
+                  onClick: function onClick() {
+                    _this4._saveToFile(markdownFile);
+                  }
+                },
+                "save as markdown"
+              )
+            ),
+            _react2.default.createElement(
+              "li",
+              null,
+              _react2.default.createElement(
+                "a",
+                {
+                  href: "#",
+                  onClick: function onClick() {
+                    _this4._saveToFile(htmlFile);
+                  }
+                },
+                "save as html"
+              )
+            ),
+            _react2.default.createElement(
+              "li",
+              null,
+              _react2.default.createElement(
+                "a",
+                {
+                  href: "#",
+                  onClick: function onClick() {
+                    _this4._saveDocument();
+                  }
+                },
+                "save online"
+              )
+            )
+          )
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "container" },
+          _react2.default.createElement(
+            "div",
+            { className: "flex-container" },
+            _react2.default.createElement("textarea", {
+              className: "half-container",
+              rows: "20",
+              cols: "50",
+              value: this.state.value,
+              onKeyDown: function onKeyDown(event) {
+                return _this4._handleKeyDown(event);
+              },
+              onChange: function onChange(event) {
+                return _this4.setState({ value: event.target.value });
+              }
+            }),
+            _react2.default.createElement("div", {
+              className: "half-container",
+              dangerouslySetInnerHTML: output(this.state.value)
+            })
+          )
+        )
+      );
+    }
+  }]);
 
-                var request = new Request('/save', {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    }),
-                    body: JSON.stringify({
-                        docName: docName,
-                        docContent: this.state.value
-                    })
-                });
-
-                fetch(request).then(function (res) {
-                    console.log(res);
-                });
-                //this should be called after fetch but could not figure out how to bind 'this'
-                this.setState({
-                    modalText: "Your document has been saved. Copy the link in the URL to view/edit later."
-                });
-                this._showModal();
-            } else {
-
-                var randomHash = Math.random().toString(36).substring(7);
-
-                var _request = new Request('/save', {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    }),
-                    body: JSON.stringify({
-                        docName: randomHash,
-                        docContent: this.state.value
-                    })
-                });
-
-                fetch(_request).then(function (res) {
-
-                    window.location = '?query=' + randomHash;
-                });
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this4 = this;
-
-            //returns html after marked.js package parses
-            var output = function output(value) {
-                var parsedMarkdown = (0, _marked2.default)(value, { sanitize: true });
-                return {
-                    __html: parsedMarkdown
-                };
-            };
-            //md and html files using filesave
-            var markdownFile = new File([this.state.value], 'markdown.md', { type: "text/plain;charset=utf-8" });
-            var htmlFile = new File([(0, _marked2.default)(this.state.value)], 'markdown.html', { type: "text/plain;charset=utf-8" });
-
-            return _react2.default.createElement(
-                'main',
-                null,
-                _react2.default.createElement(_Modal2.default, {
-                    modalText: this.state.modalText,
-                    modalClass: this.state.modalShouldShow ? "modalShow" : null
-                }),
-                _react2.default.createElement(
-                    'nav',
-                    { className: 'nav' },
-                    _react2.default.createElement(
-                        'a',
-                        { href: '/', className: 'logo' },
-                        'Markdown Pad'
-                    ),
-                    _react2.default.createElement(
-                        'span',
-                        { className: 'tagline' },
-                        'A quick solution to rapidly write and save markdown.'
-                    ),
-                    _react2.default.createElement(
-                        'ul',
-                        { className: 'saveButtons' },
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            _react2.default.createElement(
-                                'a',
-                                { href: '#', onClick: function onClick() {
-                                        _this4._saveToFile(markdownFile);
-                                    } },
-                                'save as markdown'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            _react2.default.createElement(
-                                'a',
-                                { href: '#', onClick: function onClick() {
-                                        _this4._saveToFile(htmlFile);
-                                    } },
-                                'save as html'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'li',
-                            null,
-                            _react2.default.createElement(
-                                'a',
-                                { href: '#', onClick: function onClick() {
-                                        _this4._saveDocument();
-                                    } },
-                                'save online'
-                            )
-                        )
-                    )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'container' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'flex-container' },
-                        _react2.default.createElement('textarea', { className: 'half-container', rows: '20', cols: '50',
-                            value: this.state.value,
-                            onKeyDown: function onKeyDown(event) {
-                                return _this4._handleKeyDown(event);
-                            },
-                            onChange: function onChange(event) {
-                                return _this4.setState({ value: event.target.value });
-                            }
-                        }),
-                        _react2.default.createElement('div', { className: 'half-container', dangerouslySetInnerHTML: output(this.state.value) })
-                    )
-                )
-            );
-        }
-    }]);
-
-    return Editor;
+  return Editor;
 }(_react2.default.Component);
 
 exports.default = Editor;
@@ -10041,7 +10058,7 @@ module.exports = __webpack_require__(118);
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -10049,6 +10066,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = __webpack_require__(32);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reactCopyToClipboard = __webpack_require__(194);
+
+var _reactCopyToClipboard2 = _interopRequireDefault(_reactCopyToClipboard);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10059,32 +10080,42 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Modal = function (_React$Component) {
-    _inherits(Modal, _React$Component);
+  _inherits(Modal, _React$Component);
 
-    function Modal(props) {
-        _classCallCheck(this, Modal);
+  function Modal(props) {
+    _classCallCheck(this, Modal);
 
-        return _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
+    return _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));
+  }
+
+  _createClass(Modal, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {}
+  }, {
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "div",
+        { id: "popupModal", className: this.props.modalClass },
+        _react2.default.createElement(
+          "p",
+          null,
+          this.props.modalText
+        ),
+        _react2.default.createElement(
+          _reactCopyToClipboard2.default,
+          { text: window.location.href },
+          _react2.default.createElement(
+            "button",
+            { className: "copyButton" },
+            "Click to copy link"
+          )
+        )
+      );
     }
+  }]);
 
-    _createClass(Modal, [{
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "div",
-                {
-                    id: "popupModal",
-                    className: this.props.modalClass },
-                _react2.default.createElement(
-                    "p",
-                    null,
-                    this.props.modalText
-                )
-            );
-        }
-    }]);
-
-    return Modal;
+  return Modal;
 }(_react2.default.Component);
 
 exports.default = Modal;
@@ -24261,6 +24292,238 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+/* 191 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var deselectCurrent = __webpack_require__(192);
+
+var defaultMessage = 'Copy to clipboard: #{key}, Enter';
+
+function format(message) {
+  var copyKey = (/mac os x/i.test(navigator.userAgent) ? '⌘' : 'Ctrl') + '+C';
+  return message.replace(/#{\s*key\s*}/g, copyKey);
+}
+
+function copy(text, options) {
+  var debug, message, reselectPrevious, range, selection, mark, success = false;
+  if (!options) { options = {}; }
+  debug = options.debug || false;
+  try {
+    reselectPrevious = deselectCurrent();
+
+    range = document.createRange();
+    selection = document.getSelection();
+
+    mark = document.createElement('span');
+    mark.textContent = text;
+    // reset user styles for span element
+    mark.style.all = 'unset';
+    // prevents scrolling to the end of the page
+    mark.style.position = 'fixed';
+    mark.style.top = 0;
+    mark.style.clip = 'rect(0, 0, 0, 0)';
+    // used to preserve spaces and line breaks
+    mark.style.whiteSpace = 'pre';
+    // do not inherit user-select (it may be `none`)
+    mark.style.webkitUserSelect = 'text';
+    mark.style.MozUserSelect = 'text';
+    mark.style.msUserSelect = 'text';
+    mark.style.userSelect = 'text';
+
+    document.body.appendChild(mark);
+
+    range.selectNode(mark);
+    selection.addRange(range);
+
+    var successful = document.execCommand('copy');
+    if (!successful) {
+      throw new Error('copy command was unsuccessful');
+    }
+    success = true;
+  } catch (err) {
+    debug && console.error('unable to copy using execCommand: ', err);
+    debug && console.warn('trying IE specific stuff');
+    try {
+      window.clipboardData.setData('text', text);
+      success = true;
+    } catch (err) {
+      debug && console.error('unable to copy using clipboardData: ', err);
+      debug && console.error('falling back to prompt');
+      message = format('message' in options ? options.message : defaultMessage);
+      window.prompt(message, text);
+    }
+  } finally {
+    if (selection) {
+      if (typeof selection.removeRange == 'function') {
+        selection.removeRange(range);
+      } else {
+        selection.removeAllRanges();
+      }
+    }
+
+    if (mark) {
+      document.body.removeChild(mark);
+    }
+    reselectPrevious();
+  }
+
+  return success;
+}
+
+module.exports = copy;
+
+
+/***/ }),
+/* 192 */
+/***/ (function(module, exports) {
+
+
+module.exports = function () {
+  var selection = document.getSelection();
+  if (!selection.rangeCount) {
+    return function () {};
+  }
+  var active = document.activeElement;
+
+  var ranges = [];
+  for (var i = 0; i < selection.rangeCount; i++) {
+    ranges.push(selection.getRangeAt(i));
+  }
+
+  switch (active.tagName.toUpperCase()) { // .toUpperCase handles XHTML
+    case 'INPUT':
+    case 'TEXTAREA':
+      active.blur();
+      break;
+
+    default:
+      active = null;
+      break;
+  }
+
+  selection.removeAllRanges();
+  return function () {
+    selection.type === 'Caret' &&
+    selection.removeAllRanges();
+
+    if (!selection.rangeCount) {
+      ranges.forEach(function(range) {
+        selection.addRange(range);
+      });
+    }
+
+    active &&
+    active.focus();
+  };
+};
+
+
+/***/ }),
+/* 193 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CopyToClipboard = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(32);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _copyToClipboard = __webpack_require__(191);
+
+var _copyToClipboard2 = _interopRequireDefault(_copyToClipboard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CopyToClipboard = exports.CopyToClipboard = function (_React$PureComponent) {
+  _inherits(CopyToClipboard, _React$PureComponent);
+
+  function CopyToClipboard() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, CopyToClipboard);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CopyToClipboard.__proto__ || Object.getPrototypeOf(CopyToClipboard)).call.apply(_ref, [this].concat(args))), _this), _this.onClick = function (event) {
+      var _this$props = _this.props,
+          text = _this$props.text,
+          onCopy = _this$props.onCopy,
+          children = _this$props.children,
+          options = _this$props.options;
+
+
+      var elem = _react2.default.Children.only(children);
+
+      var result = (0, _copyToClipboard2.default)(text, options);
+
+      if (onCopy) {
+        onCopy(text, result);
+      }
+
+      // Bypass onClick if it was present
+      if (elem && elem.props && typeof elem.props.onClick === 'function') {
+        elem.props.onClick(event);
+      }
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(CopyToClipboard, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          _text = _props.text,
+          _onCopy = _props.onCopy,
+          _options = _props.options,
+          children = _props.children,
+          props = _objectWithoutProperties(_props, ['text', 'onCopy', 'options', 'children']);
+
+      var elem = _react2.default.Children.only(children);
+
+      return _react2.default.cloneElement(elem, _extends({}, props, { onClick: this.onClick }));
+    }
+  }]);
+
+  return CopyToClipboard;
+}(_react2.default.PureComponent);
+
+/***/ }),
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _require = __webpack_require__(193),
+    CopyToClipboard = _require.CopyToClipboard;
+
+module.exports = CopyToClipboard;
 
 /***/ })
 /******/ ]);

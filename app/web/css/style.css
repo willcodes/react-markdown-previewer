@@ -1,142 +1,142 @@
-
 body {
-    background:whitesmoke;
-    padding-top:50px;
+  background: whitesmoke;
+  padding-top: 50px;
 }
 
-
-
-
 .nav {
-    background:#212121;
-    display:flex;
-    padding: 10px 25px;
-    width:100%;
-    color:white;
-    border-bottom:3px solid #424242;
-    font-size:20px;
-    align-items:center;
-    position: fixed;
-    margin-top:-50px;
+  background: #212121;
+  display: flex;
+  padding: 10px 25px;
+  width: 100%;
+  color: white;
+  border-bottom: 3px solid #424242;
+  font-size: 20px;
+  align-items: center;
+  position: fixed;
+  margin-top: -50px;
 }
 
 .nav ul {
-    padding:0;
-    margin:0;
-    list-style:none;
-    margin-left:auto;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  margin-left: auto;
 }
 
-
-
-
 .nav a {
-    margin: 0 15px;
-    color:white;
-    transition:0.2s;
-    font-variant: small-caps
+  margin: 0 15px;
+  color: white;
+  transition: 0.2s;
+  font-variant: small-caps;
 }
 
 .nav a:hover {
-    opacity:0.7;
-    text-decoration: none;    
+  opacity: 0.7;
+  text-decoration: none;
 }
 
-.nav a:visited, .nav a:focus {
-    color:white;
-    text-decoration: none;
+.nav a:visited,
+.nav a:focus {
+  color: white;
+  text-decoration: none;
 }
 
 span {
-    margin-left:10px;
-    align-self: center;
-    font-variant: none;
-    font-size:10px;
-    color:#90CAF9;
+  margin-left: 10px;
+  align-self: center;
+  font-variant: none;
+  font-size: 10px;
+  color: #90caf9;
 }
 
-
 #popupModal {
-    position:absolute;
-    width:350px;
-    top:25%;
-    transform:translateY(-50%);
-    left:50%;
-    transform:translateX(-50%);
-    z-index: 50;
-    opacity:0;
-    padding:15px 20px;
-    font-size:20px;
-    color:white;
-    background:#212121;
-    border:1px solid #212121;
-    border-radius:2px;
-    border-bottom:4px solid #424242;
-    text-align: center;
-    box-shadow:1px 2px 2px 1px #424242;
-    transition:0.35s all ease;
+  position: absolute;
+  width: 350px;
+  top: 25%;
+  transform: translateY(-50%);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  opacity: 0;
+  padding: 15px 20px;
+  font-size: 20px;
+  color: white;
+  background: #212121;
+  border: 1px solid #212121;
+  border-radius: 2px;
+  border-bottom: 4px solid #424242;
+  text-align: center;
+  box-shadow: 1px 2px 2px 1px #424242;
+  transition: 0.35s all ease;
 }
 
 #popupModal.modalShow {
-    opacity:1;
+  opacity: 1;
 }
 
 #popupModal p {
-    padding:0;
-    margin:0;
+  padding: 0;
+  margin: 0;
 }
-
 
 .flex-container {
-    display:flex;
-    justify-content: space-around;
-    margin:auto;
-    width:100%;
+  display: flex;
+  justify-content: space-around;
+  margin: auto;
+  width: 100%;
 }
 .container {
-    width:100%;
-    margin:auto;
+  width: 100%;
+  margin: auto;
 }
 
 .half-container {
-    height:93vh;
-    background:white;
-    padding:15px;
-    width:50vw;
-    border:1px solid  #CCC;
-    overflow:scroll;
-    word-wrap: break-word;
+  height: 93vh;
+  background: white;
+  padding: 15px;
+  width: 50vw;
+  border: 1px solid #ccc;
+  overflow: scroll;
+  word-wrap: break-word;
 }
 
 .btn-control {
-    margin:15px auto;
-    width:350px;
+  margin: 15px auto;
+  width: 350px;
 }
 
 button {
-    margin:15px;
-    text-align: center;
+  margin: 15px;
+  text-align: center;
 }
 
 .saveButtons {
-    display:flex;
+  display: flex;
 }
 
-
-@media all and (max-width:800px) {
-    .tagline {
-        display:none;
-    }
-    .saveButtons li:nth-child(1), .saveButtons li:nth-child(2) {
-        display:none;
-    }
+.copyButton {
+  background: #424242;
+  color: white;
+  font-size: 12px;
+  padding: 10px;
+  border: none;
 }
 
-@media all and (max-width:480px) {
-    .half-container {
-        width:100%;
-    }
-    .flex-container {
-        display:block;
-    }
+@media all and (max-width: 800px) {
+  .tagline {
+    display: none;
+  }
+  .saveButtons li:nth-child(1),
+  .saveButtons li:nth-child(2) {
+    display: none;
+  }
+}
+
+@media all and (max-width: 480px) {
+  .half-container {
+    width: 100%;
+  }
+  .flex-container {
+    display: block;
+  }
 }
