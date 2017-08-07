@@ -34,5 +34,8 @@
       "es2015",
       "react"
     ]
+  },
+  "devDependencies": {
+    "babel-preset-stage-2": "^6.24.1"
   }
 }
