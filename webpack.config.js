@@ -1,6 +1,6 @@
 "use strict";
 
-let webpack = require('webpack');
+let webpack = require("webpack");
 let path = require("path");
 
 let dev = path.resolve(__dirname, "app/dev");
@@ -13,18 +13,20 @@ let config = {
     filename: "app.bundle.js"
   },
   module: {
-    loaders: [{
+    loaders: [
+      {
         include: dev,
         loader: "babel-loader",
         query: {
-            presets: ['react', 'es2015']
+          presets: ["react", "es2015", "stage-2"]
         }
-    }]  
+      }
+    ]
   },
   devServer: {
     historyApiFallback: true,
-    contentBase: './'
-  },
+    contentBase: "./"
+  }
 };
 
 module.exports = config;
