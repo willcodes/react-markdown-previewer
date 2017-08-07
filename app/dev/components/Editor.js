@@ -68,45 +68,50 @@ class Editor extends React.Component {
     fileSave.saveAs(file);
   };
 
+  saveToRedis = () => {
+    let docName = window.location.search.split("?query=")[1];
+    let request = new Request("/save", {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify({
+        docName,
+        docContent: this.state.value
+      })
+    });
+    fetch(request).then(res => res).then(() => {
+      this.setState({
+        modalText: "Your document has been saved."
+      });
+      this.showModal();
+    });
+  };
+
+  createNewDocument = () => {
+    let randomHash = Math.random().toString(36).substring(7);
+    let request = new Request("/save", {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify({
+        docName: randomHash,
+        docContent: this.state.value
+      })
+    });
+    fetch(request).then(res => {
+      window.location = "?query=" + randomHash;
+    });
+  };
+
   //save to redis -> maybe should abstract this somehow
   saveDocument = () => {
     let shouldSave = window.location.search.indexOf("?query=");
     if (shouldSave !== -1) {
-      console.log(window.location.search.indexOf("?query="));
-      let docName = window.location.search.split("?query=")[1];
-
-      let request = new Request("/save", {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify({
-          docName,
-          docContent: this.state.value
-        })
-      });
-
-      fetch(request).then(res => res).then(() => {
-        this.setState({
-          modalText: "Your document has been saved."
-        });
-        this.showModal();
-      });
+      this.saveToRedis();
     } else {
-      let randomHash = Math.random().toString(36).substring(7);
-      let request = new Request("/save", {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify({
-          docName: randomHash,
-          docContent: this.state.value
-        })
-      });
-      fetch(request).then(res => {
-        window.location = "?query=" + randomHash;
-      });
+      this.createNewDocument();
     }
   };
 

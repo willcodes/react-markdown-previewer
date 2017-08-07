@@ -9819,46 +9819,51 @@ var Editor = function (_React$Component) {
       _fileSaver2.default.saveAs(file);
     };
 
+    _this.saveToRedis = function () {
+      var docName = window.location.search.split("?query=")[1];
+      var request = new Request("/save", {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json"
+        }),
+        body: JSON.stringify({
+          docName: docName,
+          docContent: _this.state.value
+        })
+      });
+      fetch(request).then(function (res) {
+        return res;
+      }).then(function () {
+        _this.setState({
+          modalText: "Your document has been saved."
+        });
+        _this.showModal();
+      });
+    };
+
+    _this.createNewDocument = function () {
+      var randomHash = Math.random().toString(36).substring(7);
+      var request = new Request("/save", {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json"
+        }),
+        body: JSON.stringify({
+          docName: randomHash,
+          docContent: _this.state.value
+        })
+      });
+      fetch(request).then(function (res) {
+        window.location = "?query=" + randomHash;
+      });
+    };
+
     _this.saveDocument = function () {
       var shouldSave = window.location.search.indexOf("?query=");
       if (shouldSave !== -1) {
-        console.log(window.location.search.indexOf("?query="));
-        var docName = window.location.search.split("?query=")[1];
-
-        var request = new Request("/save", {
-          method: "POST",
-          headers: new Headers({
-            "Content-Type": "application/json"
-          }),
-          body: JSON.stringify({
-            docName: docName,
-            docContent: _this.state.value
-          })
-        });
-
-        fetch(request).then(function (res) {
-          return res;
-        }).then(function () {
-          _this.setState({
-            modalText: "Your document has been saved."
-          });
-          _this.showModal();
-        });
+        _this.saveToRedis();
       } else {
-        var randomHash = Math.random().toString(36).substring(7);
-        var _request = new Request("/save", {
-          method: "POST",
-          headers: new Headers({
-            "Content-Type": "application/json"
-          }),
-          body: JSON.stringify({
-            docName: randomHash,
-            docContent: _this.state.value
-          })
-        });
-        fetch(_request).then(function (res) {
-          window.location = "?query=" + randomHash;
-        });
+        _this.createNewDocument();
       }
     };
 
@@ -10021,9 +10026,6 @@ var Modal = function (_React$Component) {
   }
 
   _createClass(Modal, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
