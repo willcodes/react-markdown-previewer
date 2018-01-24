@@ -1,5 +1,7 @@
 "use strict";
 
+var CopyWebpackPlugin = require("copy-webpack-plugin");
+
 let webpack = require("webpack");
 let path = require("path");
 
@@ -23,6 +25,7 @@ let config = {
       }
     ]
   },
+  plugins: [new CopyWebpackPlugin([{ from: "app/dev/css", to: "css" }])],
   devServer: {
     historyApiFallback: true,
     contentBase: "./"
