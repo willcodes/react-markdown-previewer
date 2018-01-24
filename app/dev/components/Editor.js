@@ -44,7 +44,7 @@ class Editor extends React.Component {
     let charCode = String.fromCharCode(event.which).toLocaleLowerCase();
     if (
       (event.ctrlKey && charCode === "s") ||
-      (event.metaKey && charCode === "c")
+      (event.metaKey && charCode === "s")
     ) {
       event.preventDefault();
       this.saveDocument();

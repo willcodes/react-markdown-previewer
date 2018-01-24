@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import TextData from './components/TextData';
-import Editor from './components/Editor';
+import App from './components/App';
 
 ReactDOM.render(
-    <Editor></Editor>,
+    <App></App>,
     document.getElementById("app")
 );
