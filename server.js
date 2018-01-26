@@ -5,6 +5,7 @@ const express = require('express'),
       redis = require('redis'),
       client = redis.createClient(),
       app = express(),
+      cors = require('cors'),
       port = process.env.PORT || 3003,
       publicPath = path.resolve(__dirname);
 
@@ -17,8 +18,7 @@ app.get('/favicon.ico', function (req, res) {
 
 app.use(bodyParser.json());
 
-// We point to our static assets
-app.use('/', express.static(publicPath));
+app.use(cors({origin:true,credentials: true}));
 
 //endpoint to get get key based on query string
 app.get('/:id', (req,res) => {
@@ -36,7 +36,6 @@ app.get('/:id', (req,res) => {
 
 //endpoint to save to redis
 app.post('/save', (req, res) => {
-
   client.set(req.body.docName, req.body.docContent,(err, reply) => {
     if(err) {
       res.send(err)

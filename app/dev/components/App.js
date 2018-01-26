@@ -4,7 +4,9 @@ import {
   Route,
   Link,
   Redirect,
-  withRouter
+  withRouter,
+  Switch,
+  browserHistory
 } from "react-router-dom";
 
 import Editor from "./Editor";
@@ -12,10 +14,11 @@ import Editor from "./Editor";
 export default class App extends React.Component {
   render() {
     return (
-      <Router>
-        <Route>
-          <Editor />
-        </Route>
+      <Router history={browserHistory}>
+        <div>
+          <Route exact path="/" component={Editor} />
+          <Route path="/:id" component={Editor} {...this.props} />
+        </div>
       </Router>
     );
   }

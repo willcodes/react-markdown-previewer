@@ -6,6 +6,9 @@ import Nav from "./Nav";
 import marked from "marked";
 import fileSave from "file-saver";
 
+//temporary, must move to config
+const endpoint = "http://localhost:3003";
+
 class Editor extends React.Component {
   constructor(props) {
     super(props);
@@ -18,21 +21,29 @@ class Editor extends React.Component {
   }
 
   componentWillMount() {
+    const { id } = this.props.match.params;
     let defaultText =
       "## Quick Guide\n---\n>Instructions:\n>1. Type markdown on the left.\n2. View markup on the right.\n3. Save to disk or online for editing later.\n\n**Saving  Online**:\n\nFiles are stored online, however anyone with the link can access them. This application is meant for quick writing and sharing, not a cloud based storage solution.\n\nCopy the URL after you hit *SAVE ONLINE* to share or edit from another computer. \n\n**Learn More**:\n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**\n\n**Built with the help of:**\n- Reactjs\n- Nodejs\n- Markedjs\n- Redis\n- [Marked Custom Styles](https://github.com/ttscoff/MarkedCustomStyles)";
-
-    if (window.location.search.indexOf("?query=") > -1) {
-      var id = window.location.search.split("?query=")[1];
-
-      fetch("/" + id).then(res => res.text()).then(res => {
-        res !== ""
-          ? this.setState({
-              value: res
-            })
-          : this.setState({
-              value: defaultText
-            });
+    if (id) {
+      console.log(id, "hit");
+      var request = new Request(`${endpoint}/${id}`, {
+        method: "GET",
+        headers: new Headers({
+          "Content-Type": "application/json"
+        })
       });
+      fetch(request)
+        .then(res => res.text())
+        .then(res => {
+          console.log(res);
+          res !== ""
+            ? this.setState({
+                value: res
+              })
+            : this.setState({
+                value: defaultText
+              });
+        });
     } else {
       this.setState({
         value: defaultText
@@ -70,31 +81,33 @@ class Editor extends React.Component {
 
   //save to redis -> maybe should abstract this somehow
   saveDocument = () => {
-    let shouldSave = window.location.search.indexOf("?query=");
-    if (shouldSave !== -1) {
-      console.log(window.location.search.indexOf("?query="));
-      let docName = window.location.search.split("?query=")[1];
-
-      let request = new Request("/save", {
+    const { id } = this.props.match.params;
+    if (id) {
+      let request = new Request(`${endpoint}/save`, {
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json"
         }),
         body: JSON.stringify({
-          docName,
+          docName: id,
           docContent: this.state.value
         })
       });
 
-      fetch(request).then(res => res).then(() => {
-        this.setState({
-          modalText: "Your document has been saved."
+      fetch(request)
+        .then(res => res)
+        .then(() => {
+          this.setState({
+            modalText: "Your document has been saved."
+          });
+          this.showModal();
         });
-        this.showModal();
-      });
+        
     } else {
-      let randomHash = Math.random().toString(36).substring(7);
-      let request = new Request("/save", {
+      let randomHash = Math.random()
+        .toString(36)
+        .substring(7);
+      let request = new Request(`${endpoint}/save`, {
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json"
@@ -105,7 +118,7 @@ class Editor extends React.Component {
         })
       });
       fetch(request).then(res => {
-        window.location = "?query=" + randomHash;
+        this.props.history.push("/" + randomHash);
       });
     }
   };
