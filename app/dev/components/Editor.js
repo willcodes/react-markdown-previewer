@@ -16,7 +16,8 @@ class Editor extends React.Component {
     this.state = {
       value: "",
       modelText: "",
-      modalShouldShow: false
+      modalShouldShow: false,
+      lastSaved: null
     };
   }
 
@@ -35,7 +36,6 @@ class Editor extends React.Component {
       fetch(request)
         .then(res => res.text())
         .then(res => {
-          console.log(res);
           res !== ""
             ? this.setState({
                 value: res
@@ -48,6 +48,19 @@ class Editor extends React.Component {
       this.setState({
         value: defaultText
       });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { id } = this.props.match.params;
+    if (id && this.state.value != prevState.value) {
+      fetch(this.saveExisting())
+        .then(res => res)
+        .then(() => {
+          this.setState({
+            lastSaved: Date.now()
+          });
+        });
     }
   }
 
@@ -79,22 +92,38 @@ class Editor extends React.Component {
     fileSave.saveAs(file);
   };
 
+  saveExisting = () => {
+    const { id } = this.props.match.params;
+    return new Request(`${endpoint}/save`, {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify({
+        docName: id,
+        docContent: this.state.value
+      })
+    });
+  };
+
+  saveNew = randomHash => {
+    return new Request(`${endpoint}/save`, {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify({
+        docName: randomHash,
+        docContent: this.state.value
+      })
+    });
+  };
+
   //save to redis -> maybe should abstract this somehow
   saveDocument = () => {
     const { id } = this.props.match.params;
     if (id) {
-      let request = new Request(`${endpoint}/save`, {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify({
-          docName: id,
-          docContent: this.state.value
-        })
-      });
-
-      fetch(request)
+      fetch(this.saveExisting())
         .then(res => res)
         .then(() => {
           this.setState({
@@ -102,22 +131,12 @@ class Editor extends React.Component {
           });
           this.showModal();
         });
-        
     } else {
       let randomHash = Math.random()
         .toString(36)
-        .substring(7);
-      let request = new Request(`${endpoint}/save`, {
-        method: "POST",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        }),
-        body: JSON.stringify({
-          docName: randomHash,
-          docContent: this.state.value
-        })
-      });
-      fetch(request).then(res => {
+        .substring(3);
+
+      fetch(this.saveNew(randomHash)).then(res => {
         this.props.history.push("/" + randomHash);
       });
     }
@@ -139,7 +158,7 @@ class Editor extends React.Component {
       type: "text/plain;charset=utf-8"
     });
 
-    const { modalText, modalShouldShow } = this.state;
+    const { modalText, modalShouldShow, value } = this.state;
 
     return (
       <main>
@@ -159,7 +178,7 @@ class Editor extends React.Component {
               className="half-container"
               rows="20"
               cols="50"
-              value={this.state.value}
+              value={value}
               onKeyDown={event => this.handleKeyDown(event)}
               onChange={event => this.setState({ value: event.target.value })}
             />
