@@ -1,4 +1,9 @@
 import React from "react";
+import IconMenu from "material-ui/IconMenu";
+import MenuItem from "material-ui/MenuItem";
+import IconButton from "material-ui/IconButton";
+import FileFileDownload from "material-ui/svg-icons/file/file-download";
+import ContentSave from "material-ui/svg-icons/content/save";
 
 const Nav = ({ saveFile, markdownFile, htmlFile, saveDocument }) => {
   return (
@@ -6,40 +11,23 @@ const Nav = ({ saveFile, markdownFile, htmlFile, saveDocument }) => {
       <a href="/" className="logo">
         Markdown Pad
       </a>
-      <span className="tagline">
-        A quick solution to rapidly write and save markdown.
-      </span>
-      <ul className="saveButtons">
-        <li>
-          <a
-            href="#"
-            onClick={() => {
-              saveFile(markdownFile);
-            }}
-          >
-            save as markdown
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            onClick={() => {
-              saveFile(htmlFile);
-            }}
-          >
-            save as html
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            onClick={() => {
-              saveDocument();
-            }}
-          >
-            save online
-          </a>
-        </li>
+      <ul>
+        <IconButton onClick={saveDocument}>
+          <ContentSave color="black" />
+        </IconButton>
+        <IconMenu
+          iconButtonElement={
+            <IconButton>
+              <FileFileDownload color="black" />
+            </IconButton>
+          }
+        >
+          <MenuItem
+            primaryText="As Markdown"
+            onClick={() => saveFile(markdownFile)}
+          />
+          <MenuItem primaryText="As HTML" onClick={() => saveFile(htmlFile)} />
+        </IconMenu>
       </ul>
     </nav>
   );

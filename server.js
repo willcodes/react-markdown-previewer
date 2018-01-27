@@ -25,7 +25,6 @@ app.get('/:id', (req,res) => {
   let documentKey = req.params.id;
   client.get(documentKey, (err, reply) => {
     if(reply) {
-      console.log(reply);
       res.send(reply);
     }
     else {

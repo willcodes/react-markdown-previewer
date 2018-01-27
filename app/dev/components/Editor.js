@@ -145,7 +145,7 @@ class Editor extends React.Component {
   render() {
     //returns html after marked.js package parses
     let output = value => {
-      let parsedMarkdown = marked(value, { sanitize: true });
+      let parsedMarkdown = marked(value, { sanitize: true, breaks:true });
       return {
         __html: parsedMarkdown
       };
