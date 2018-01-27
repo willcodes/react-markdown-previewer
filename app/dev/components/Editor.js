@@ -5,9 +5,9 @@ import Modal from "./Modal";
 import Nav from "./Nav";
 import marked from "marked";
 import fileSave from "file-saver";
+import config from "../config";
 
 //temporary, must move to config
-const endpoint = "http://localhost:3003";
 
 class Editor extends React.Component {
   constructor(props) {
@@ -23,11 +23,10 @@ class Editor extends React.Component {
 
   componentWillMount() {
     const { id } = this.props.match.params;
-    let defaultText =
-      "## Quick Guide\n---\n>Instructions:\n>1. Type markdown on the left.\n2. View markup on the right.\n3. Save to disk or online for editing later.\n\n**Saving  Online**:\n\nFiles are stored online, however anyone with the link can access them. This application is meant for quick writing and sharing, not a cloud based storage solution.\n\nCopy the URL after you hit *SAVE ONLINE* to share or edit from another computer. \n\n**Learn More**:\n\nLearn how to use markdown here: **[How To Markdown](http://www.markdowntutorial.com/)**\n\n**Built with the help of:**\n- Reactjs\n- Nodejs\n- Markedjs\n- Redis\n- [Marked Custom Styles](https://github.com/ttscoff/MarkedCustomStyles)";
+    
     if (id) {
       console.log(id, "hit");
-      var request = new Request(`${endpoint}/${id}`, {
+      var request = new Request(`${config.base_url}/${id}`, {
         method: "GET",
         headers: new Headers({
           "Content-Type": "application/json"
@@ -41,12 +40,12 @@ class Editor extends React.Component {
                 value: res
               })
             : this.setState({
-                value: defaultText
+                value: config.default_text
               });
         });
     } else {
       this.setState({
-        value: defaultText
+        value: config.default_text
       });
     }
   }
@@ -94,7 +93,7 @@ class Editor extends React.Component {
 
   saveExisting = () => {
     const { id } = this.props.match.params;
-    return new Request(`${endpoint}/save`, {
+    return new Request(`${config.base_url}/save`, {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json"
@@ -107,7 +106,7 @@ class Editor extends React.Component {
   };
 
   saveNew = randomHash => {
-    return new Request(`${endpoint}/save`, {
+    return new Request(`${config.base_url}/save`, {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json"
@@ -127,7 +126,8 @@ class Editor extends React.Component {
         .then(res => res)
         .then(() => {
           this.setState({
-            modalText: "Your document has been saved."
+            modalText: "Your document has been saved.",
+            lastSaved: Date.now()
           });
           this.showModal();
         });
@@ -171,6 +171,7 @@ class Editor extends React.Component {
           markdownFile={markdownFile}
           htmlFile={htmlFile}
           saveDocument={this.saveDocument}
+          lastSave={this.state.lastSaved}
         />
         <div className="container">
           <div className="flex-container">
