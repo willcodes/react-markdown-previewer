@@ -11,15 +11,17 @@ import {
 
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import Editor from "./Editor";
+import Login from "./Login";
 
 export default class App extends React.Component {
   render() {
     return (
       <MuiThemeProvider>
-        <Router history={browserHistory}>
+        <Router>
           <div>
             <Route exact path="/" component={Editor} />
-            <Route path="/:id" component={Editor} {...this.props} />
+            <Route path="/pads/:id" component={Editor} {...this.props} />
+            <Route path="/login" component={Login} />
           </div>
         </Router>
       </MuiThemeProvider>

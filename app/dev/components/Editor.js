@@ -20,18 +20,26 @@ class Editor extends React.Component {
       lastSaved: null
     };
   }
+  componentDidMount() {
+    this.setState({
+      lastSaved: null
+    });
+  }
 
   componentWillMount() {
     const { id } = this.props.match.params;
-    
+
     if (id) {
       console.log(id, "hit");
-      var request = new Request(`${config.base_url}/${id}`, {
-        method: "GET",
-        headers: new Headers({
-          "Content-Type": "application/json"
-        })
-      });
+      var request = new Request(
+        `${config.base_url + config.public_route}/${id}`,
+        {
+          method: "GET",
+          headers: new Headers({
+            "Content-Type": "application/json"
+          })
+        }
+      );
       fetch(request)
         .then(res => res.text())
         .then(res => {
@@ -52,7 +60,7 @@ class Editor extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { id } = this.props.match.params;
-    if (id && this.state.value != prevState.value) {
+    if (id && this.state.value != prevState.value && this.state.value != config.default_text) {
       fetch(this.saveExisting())
         .then(res => res)
         .then(() => {
@@ -93,7 +101,7 @@ class Editor extends React.Component {
 
   saveExisting = () => {
     const { id } = this.props.match.params;
-    return new Request(`${config.base_url}/save`, {
+    return new Request(`${config.base_url + config.public_route}/save`, {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json"
@@ -106,7 +114,7 @@ class Editor extends React.Component {
   };
 
   saveNew = randomHash => {
-    return new Request(`${config.base_url}/save`, {
+    return new Request(`${config.base_url + config.public_route}/save`, {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json"
@@ -137,7 +145,7 @@ class Editor extends React.Component {
         .substring(3);
 
       fetch(this.saveNew(randomHash)).then(res => {
-        this.props.history.push("/" + randomHash);
+        this.props.history.push("/pads/" + randomHash);
       });
     }
   };
@@ -145,7 +153,7 @@ class Editor extends React.Component {
   render() {
     //returns html after marked.js package parses
     let output = value => {
-      let parsedMarkdown = marked(value, { sanitize: true, breaks:true });
+      let parsedMarkdown = marked(value, { sanitize: true, breaks: true });
       return {
         __html: parsedMarkdown
       };

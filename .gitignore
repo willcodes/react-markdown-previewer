@@ -1,3 +1,4 @@
 node_modules/
 app/web/
 .env
+private.key
