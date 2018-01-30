@@ -15,16 +15,15 @@ const Nav = ({ saveFile, markdownFile, htmlFile, saveDocument, lastSave }) => {
       <div>
         {timeDiff != null && <p>last saved {timeDiff}</p>}
         <IconButton onClick={saveDocument}>
-          <ContentSave color="black" />
+          <ContentSave color="#ececec" />
         </IconButton>
-
         <IconMenu
           iconButtonElement={
             <IconButton>
-              <FileFileDownload color="black" />
+              <FileFileDownload color="#ececec" />
             </IconButton>
           }
-        >
+          >
           <MenuItem
             primaryText="As Markdown"
             onClick={() => saveFile(markdownFile)}
