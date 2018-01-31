@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import TextData from './components/TextData';
-import App from './components/App';
+import AppRouter from './routes/AppRouter';
 
 ReactDOM.render(
-    <App></App>,
+    <AppRouter />,
     document.getElementById("app")
 );

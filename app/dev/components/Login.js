@@ -1,6 +1,8 @@
 import React from "react";
 import TextField from "material-ui/TextField";
+import RaisedButton from "material-ui/RaisedButton";
 import { orange500, blue500 } from "material-ui/styles/colors";
+import { Link } from "react-router-dom";
 
 const styles = {
   errorStyle: {
@@ -34,6 +36,10 @@ export default class Login extends React.Component {
           type="password"
         />
         <br />
+        <RaisedButton label="Sign In" primary={true} />
+        <Link to="/signup">
+          <p> sign up </p>
+        </Link>
       </div>
     );
   }

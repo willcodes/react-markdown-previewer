@@ -183,6 +183,10 @@ class Editor extends React.Component {
         />
         <div className="container">
           <div className="flex-container">
+            <div
+              className="half-container"
+              dangerouslySetInnerHTML={output(this.state.value)}
+            />
             <textarea
               className="half-container"
               rows="20"
@@ -190,10 +194,6 @@ class Editor extends React.Component {
               value={value}
               onKeyDown={event => this.handleKeyDown(event)}
               onChange={event => this.setState({ value: event.target.value })}
-            />
-            <div
-              className="half-container"
-              dangerouslySetInnerHTML={output(this.state.value)}
             />
           </div>
         </div>

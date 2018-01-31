@@ -5,8 +5,16 @@ import IconButton from "material-ui/IconButton";
 import FileFileDownload from "material-ui/svg-icons/file/file-download";
 import ContentSave from "material-ui/svg-icons/content/save";
 import AccountCircle from "material-ui/svg-icons/action/account-circle";
+import { withRouter } from "react-router-dom";
 
-const Nav = ({ saveFile, markdownFile, htmlFile, saveDocument, lastSave }) => {
+const Nav = ({
+  saveFile,
+  markdownFile,
+  htmlFile,
+  saveDocument,
+  lastSave,
+  history
+}) => {
   const timeDiff = lastSave ? new Date(lastSave).toLocaleTimeString() : null;
   return (
     <nav className="nav">
@@ -16,12 +24,12 @@ const Nav = ({ saveFile, markdownFile, htmlFile, saveDocument, lastSave }) => {
       <div>
         {timeDiff != null && <p>last saved {timeDiff}</p>}
         <IconButton onClick={saveDocument}>
-          <ContentSave color="black" />
+          <ContentSave color="#ececec" />
         </IconButton>
         <IconMenu
           iconButtonElement={
             <IconButton>
-              <FileFileDownload color="black" />
+              <FileFileDownload color="#ececec" />
             </IconButton>
           }
         >
@@ -38,7 +46,10 @@ const Nav = ({ saveFile, markdownFile, htmlFile, saveDocument, lastSave }) => {
             </IconButton>
           }
         >
-          <MenuItem primaryText="Login" />
+          <MenuItem
+            primaryText="Login"
+            onClick={() => history.push("/login")}
+          />
           <MenuItem primaryText="Profile" />
           <MenuItem primaryText="Logout" />
         </IconMenu>
@@ -47,4 +58,4 @@ const Nav = ({ saveFile, markdownFile, htmlFile, saveDocument, lastSave }) => {
   );
 };
 
-export default Nav;
+export default withRouter(Nav);

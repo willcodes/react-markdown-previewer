@@ -10,10 +10,11 @@ import {
 } from "react-router-dom";
 
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import Editor from "./Editor";
-import Login from "./Login";
+import Editor from "../components/Editor";
+import LoginContainer from "../containers/LoginContainer";
+import SignUpContainer from "../containers/SignUpContainer";
 
-export default class App extends React.Component {
+export default class AppRouter extends React.Component {
   render() {
     return (
       <MuiThemeProvider>
@@ -21,7 +22,8 @@ export default class App extends React.Component {
           <div>
             <Route exact path="/" component={Editor} />
             <Route path="/pads/:id" component={Editor} {...this.props} />
-            <Route path="/login" component={Login} />
+            <Route path="/login" component={LoginContainer} />
+            <Route path="/signup" component={SignUpContainer} />
           </div>
         </Router>
       </MuiThemeProvider>
