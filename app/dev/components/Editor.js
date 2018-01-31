@@ -188,14 +188,6 @@ class Editor extends React.Component {
               className="half-container"
               dangerouslySetInnerHTML={output(this.state.value)}
             />
-            {/* <textarea
-              className="half-container"
-              rows="20"
-              cols="50"
-              value={value}
-              onKeyDown={event => this.handleKeyDown(event)}
-              onChange={event => this.setState({ value: event.target.value })}
-            /> */}
             <AceEditor
               className="half-container"
               mode="markdown"
