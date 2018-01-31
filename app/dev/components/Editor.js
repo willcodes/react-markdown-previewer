@@ -7,6 +7,11 @@ import marked from "marked";
 import fileSave from "file-saver";
 import config from "../config";
 
+import brace from 'brace';
+import AceEditor from 'react-ace';
+ 
+import 'brace/mode/markdown';
+import 'brace/theme/github';
 //temporary, must move to config
 
 class Editor extends React.Component {
@@ -64,6 +69,7 @@ class Editor extends React.Component {
   }
 
   handleKeyDown = event => {
+    console.log(event);
     let charCode = String.fromCharCode(event.which).toLocaleLowerCase();
     if (
       (event.ctrlKey && charCode === "s") ||
@@ -117,6 +123,10 @@ class Editor extends React.Component {
       })
     });
   };
+
+  testing = () => {
+    
+  }
 
   //save to redis -> maybe should abstract this somehow
   saveDocument = () => {
@@ -179,14 +189,25 @@ class Editor extends React.Component {
               className="half-container"
               dangerouslySetInnerHTML={output(this.state.value)}
             />
-            <textarea
+            {/* <textarea
               className="half-container"
               rows="20"
               cols="50"
               value={value}
               onKeyDown={event => this.handleKeyDown(event)}
               onChange={event => this.setState({ value: event.target.value })}
-            />
+            /> */}
+            <AceEditor
+              className="half-container"
+              mode="markdown"
+              theme="github"
+              value={value}
+              onKeyDown={event => this.handleKeyDown(event)}
+              onChange={event => this.setState({ value: event })}
+              name="editor"
+              fontSize={13}
+              width="50vw"
+            />,
           </div>
         </div>
       </main>
