@@ -69,7 +69,6 @@ class Editor extends React.Component {
   }
 
   handleKeyDown = event => {
-    console.log(event);
     let charCode = String.fromCharCode(event.which).toLocaleLowerCase();
     if (
       (event.ctrlKey && charCode === "s") ||
