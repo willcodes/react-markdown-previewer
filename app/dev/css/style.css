@@ -13,6 +13,7 @@ body {
     position: fixed;
     margin-top: -50px;
     font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    z-index: 1000;
 }
 
 .nav div {
@@ -60,12 +61,8 @@ body {
     text-decoration: none;
 }
 
-span {
-    margin-left: 10px;
-    align-self: center;
-    font-variant: none;
-    font-size: 10px;
-    color: black;
+#editor {
+    min-height: 83vh !important;
 }
 
 #popupModal {
