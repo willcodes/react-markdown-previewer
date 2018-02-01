@@ -1,12 +1,11 @@
 import React from "react";
+import Signup from "../components/Signup";
 
 class SignUpContainer extends React.Component {
     state = {  }
     render() {
         return (
-            <div>
-                SignUp
-            </div>
+            <Signup />
         );
     }
 }
