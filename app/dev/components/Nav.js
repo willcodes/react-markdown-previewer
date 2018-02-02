@@ -2,6 +2,7 @@ import React from "react";
 import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
 import IconButton from "material-ui/IconButton";
+import Menu from 'material-ui/Menu';
 import FileFileDownload from "material-ui/svg-icons/file/file-download";
 import ContentSave from "material-ui/svg-icons/content/save";
 import AccountCircle from "material-ui/svg-icons/action/account-circle";
@@ -27,6 +28,8 @@ const Nav = ({
           <ContentSave color="#ececec" />
         </IconButton>
         <IconMenu
+          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}
           iconButtonElement={
             <IconButton>
               <FileFileDownload color="#ececec" />
@@ -34,24 +37,26 @@ const Nav = ({
           }
         >
           <MenuItem
-            primaryText="As Markdown"
+            primaryText="Download Markdown"
             onClick={() => saveFile(markdownFile)}
           />
-          <MenuItem primaryText="As HTML" onClick={() => saveFile(htmlFile)} />
+          <MenuItem primaryText="Download HTML" onClick={() => saveFile(htmlFile)} />
         </IconMenu>
         <IconMenu
+          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}
           iconButtonElement={
             <IconButton>
-              <AccountCircle color="black" />
+              <AccountCircle color="#ececec" />
             </IconButton>
           }
         >
-          <MenuItem
-            primaryText="Login"
-            onClick={() => history.push("/login")}
-          />
-          <MenuItem primaryText="Profile" />
-          <MenuItem primaryText="Logout" />
+            <MenuItem
+              primaryText="Login"
+              onClick={() => history.push("/login")}
+              />
+            <MenuItem primaryText="View Profile" />
+            <MenuItem primaryText="Logout" />
         </IconMenu>
       </div>
     </nav>

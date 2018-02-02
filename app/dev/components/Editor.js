@@ -6,6 +6,7 @@ import Nav from "./Nav";
 import marked from "marked";
 import fileSave from "file-saver";
 import config from "../config";
+import Dialog from 'material-ui/Dialog';
 
 //temporary, must move to config
 
@@ -16,10 +17,16 @@ class Editor extends React.Component {
     this.state = {
       value: "",
       modelText: "",
-      modalShouldShow: false,
+      modalOpen: false,
       lastSaved: null
     };
   }
+  componentDidMount() {
+    this.setState({
+      lastSaved: null
+    });
+  }
+
   componentDidMount() {
     this.setState({
       lastSaved: null
@@ -82,16 +89,12 @@ class Editor extends React.Component {
     }
   };
 
-  showModal = () => {
-    this.setState({
-      modalShouldShow: true
-    });
+  handleModalOpen = () => {
+    this.setState({modalOpen: true});
+  };
 
-    document.onclick = () => {
-      this.setState({
-        modalShouldShow: false
-      });
-    };
+  handleModalClose = () => {
+    this.setState({modalOpen: false});
   };
 
   //uses filesave package
@@ -128,16 +131,22 @@ class Editor extends React.Component {
 
   //save to redis -> maybe should abstract this somehow
   saveDocument = () => {
+    // for testing purposes:
+    this.setState({
+      modalText: "Your document has been saved!",
+    })
+    this.handleModalOpen();
+    // --------
     const { id } = this.props.match.params;
     if (id) {
       fetch(this.saveExisting())
         .then(res => res)
         .then(() => {
           this.setState({
-            modalText: "Your document has been saved.",
+            modalText: "Your document has been saved!",
             lastSaved: Date.now()
           });
-          this.showModal();
+          this.handleModalOpen();
         });
     } else {
       let randomHash = Math.random()
@@ -170,9 +179,10 @@ class Editor extends React.Component {
 
     return (
       <main>
-        <Modal
-          modalText={modalText}
-          modalClass={modalShouldShow ? "modalShow" : null}
+        <Modal 
+          title={this.state.modalText}
+          close={this.handleModalClose}
+          open={this.state.modalOpen}
         />
         <Nav
           saveFile={this.saveToFile}
@@ -184,7 +194,7 @@ class Editor extends React.Component {
         <div className="container">
           <div className="flex-container">
             <div
-              className="half-container"
+              className="half-container preview-container"
               dangerouslySetInnerHTML={output(this.state.value)}
             />
             <textarea
