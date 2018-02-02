@@ -198,6 +198,8 @@ class Editor extends React.Component {
               name="editor"
               fontSize={13}
               width="50vw"
+              wrapEnabled={true}
+              showPrintMargin={false}
             />,
           </div>
         </div>
