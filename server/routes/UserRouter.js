@@ -9,11 +9,25 @@ const saltRounds = 10;
 
 let UserRouter = express.Router();
 
+/**
+ * @api {post} /api/users Request User information
+ * @apiName Create User
+ * @apiGroup Users
+ * @apiParam {String} username username
+ * @apiParam {String} password password, no current requirements for length/complexity
+ * @apiParam {String} email email adddress,again no validation for now.
+ * @apiHeader {String}  Authorization: Bearer <Token>
+ * @apiSuccess {Boolean} success if fetch was successful
+ * @apiSuccess {String} message Information about user creation
+ * @apiError InvalidRequest No username or password provided
+ * @apiError InvalidUsername Username is invalid
+ */
+
 UserRouter.route("/").post((req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
+  const { username, password, email } = req.body;
+  if (!username || !password || !email) {
     res.status(400).send({
-      message: "bad request, no username or password provided"
+      message: "bad request, no username, password or email provided"
     });
   } else {
     let pw = bcrypt.hashSync(password, saltRounds);
@@ -21,7 +35,8 @@ UserRouter.route("/").post((req, res) => {
       .insert([
         {
           username,
-          password: pw
+          password: pw,
+          email
         }
       ])
       .then(response => {

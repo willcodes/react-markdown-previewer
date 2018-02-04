@@ -50,7 +50,7 @@ app.use(bodyParser.json());
 
 app.use("/api/public", PublicRouter);
 app.use("/api/users", UserRouter);
-app.use("/api/login", AuthMiddleware, AuthRouter);
+app.use("/api/login", AuthRouter);
 // app.use("/dashboard", AuthMiddleware, (req, res) => {
 //   console.log('yoyoyoyooyo');
 // })

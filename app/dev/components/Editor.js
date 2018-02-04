@@ -18,12 +18,15 @@ class Editor extends React.Component {
       value: "",
       modelText: "",
       modalOpen: false,
-      lastSaved: null
+      lastSaved: null,
+      modalShouldShow: false
     };
   }
   componentDidMount() {
+    const { id } = this.props.match.params;
     this.setState({
-      lastSaved: null
+      lastSaved: null,
+      modalShouldShow: id ? true : false
     });
   }
 
@@ -129,14 +132,7 @@ class Editor extends React.Component {
     });
   };
 
-  //save to redis -> maybe should abstract this somehow
   saveDocument = () => {
-    // for testing purposes:
-    this.setState({
-      modalText: "Your document has been saved!",
-    })
-    this.handleModalOpen();
-    // --------
     const { id } = this.props.match.params;
     if (id) {
       fetch(this.saveExisting())
