@@ -1,9 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 // import TextData from './components/TextData';
-import AppRouter from './routes/AppRouter';
+import AppRouter from "./routes/AppRouter";
+import store from "./store/index";
+import { Provider } from "react-redux";
 
 ReactDOM.render(
-    <AppRouter />,
-    document.getElementById("app")
+  <Provider store={store}>
+    <AppRouter />
+  </Provider>,
+  document.getElementById("app")
 );
