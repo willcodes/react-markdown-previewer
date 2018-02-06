@@ -14,3 +14,5 @@ export default (state, action) => {
   }
   return appReducer(state, action);
 };
+
+export const getUser = state => state.user;

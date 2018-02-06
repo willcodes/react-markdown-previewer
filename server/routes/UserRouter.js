@@ -5,8 +5,6 @@ var db = require("../db");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-// const passwordHash = bcrypt.hashSync(myPlaintextPassword, salt);
-
 let UserRouter = express.Router();
 
 /**

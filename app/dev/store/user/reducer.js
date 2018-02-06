@@ -1,6 +1,11 @@
 import { combineReducers } from "redux";
 import { SET_LOGIN_STATUS, VALIDATE_USER } from "../../constants";
 
+const defaultStatus = {
+  userValidated:false,
+  loginStatus:null
+}
+
 const status = (state = defaultStatus, action) => {
   switch (action.type) {
     case VALIDATE_USER:
@@ -21,6 +26,4 @@ const status = (state = defaultStatus, action) => {
   }
 };
 
-export default combineReducers({
-  status
-});
+export default status

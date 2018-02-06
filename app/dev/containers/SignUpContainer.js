@@ -1,8 +1,8 @@
 import React from "react";
 import Signup from "../components/Signup";
 
+
 class SignUpContainer extends React.Component {
-    state = {  }
     render() {
         return (
             <Signup />
@@ -10,4 +10,4 @@ class SignUpContainer extends React.Component {
     }
 }
 
-export default SignUpContainer;
+export default (SignUpContainer)
