@@ -43,12 +43,10 @@ class LoginContainer extends React.Component {
     }
   }
 
-
-
   render() {
     const { loginStatus, userValidated } = this.props.user;
     const { history } = this.props
-    if (loginStatus === USER_LOGIN_SUCCESS && userValidated) return <Redirect to="/user/dashboard" />;
+    if (loginStatus === USER_LOGIN_SUCCESS || userValidated) return <Redirect to="/user/dashboard" />;
     else return <Login handleLogin={this.handleLogin} />
   }
 }

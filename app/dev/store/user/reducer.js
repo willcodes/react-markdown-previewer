@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { SET_LOGIN_STATUS, VALIDATE_USER } from "../../constants";
 
 const defaultStatus = {
-  userValidated:false,
+  userValidated:true,
   loginStatus:null
 }
 
@@ -11,7 +11,6 @@ const status = (state = defaultStatus, action) => {
     case VALIDATE_USER:
       return {
         ...state,
-        isLoading: false,
         userValidated: action.payload
       };
 

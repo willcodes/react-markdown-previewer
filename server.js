@@ -51,9 +51,10 @@ app.use(bodyParser.json());
 app.use("/api/public", PublicRouter);
 app.use("/api/users", UserRouter);
 app.use("/api/login", AuthRouter);
-// app.use("/dashboard", AuthMiddleware, (req, res) => {
-//   console.log('yoyoyoyooyo');
-// })
+app.use("/api/dashboard", AuthMiddleware, (req, res) => {
+  console.log('yoyoyoyooyo');
+  res.sendStatus(200);
+})
 
 app.listen(port, function() {
   console.log("Server running on port " + port);

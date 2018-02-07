@@ -14,6 +14,8 @@ import Editor from "../components/Editor";
 import LoginContainer from "../containers/LoginContainer";
 import SignUpContainer from "../containers/SignUpContainer";
 
+import UserRouter from "./UserRouter"
+
 export default class AppRouter extends React.Component {
   render() {
     return (
@@ -23,8 +25,9 @@ export default class AppRouter extends React.Component {
             <Route exact path="/" component={Editor} />
             <Route path="/pads/:id" component={Editor} {...this.props} />
             <Route path="/login" component={LoginContainer} />
-            <Route path="/user/dashboard" render={() => <div>dashboard page</div>} />
             <Route path="/signup" component={SignUpContainer} />
+
+            <Route path="/user" component={UserRouter} />
           </div>
         </Router>
       </MuiThemeProvider>
