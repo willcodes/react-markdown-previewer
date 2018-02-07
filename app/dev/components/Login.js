@@ -21,46 +21,83 @@ const inputStyles = {
   },
 };
 
+
+
 export default class Login extends React.Component {
+
+  state = {
+    username: "",
+    password: ""
+  }
+
+  handleOnChange = e => {
+    const target = e.target;
+    const value = target.value;
+    const key = target.name;
+
+    this.setState(
+      {
+        [key]: value
+      }
+    );
+  };
+
+  handleOnClick = (e) => {
+    const { username, password } = this.state;
+    e.preventDefault();
+    this.props.handleLogin({ username, password });
+  }
+
   render() {
+
+    const { username, password } = this.state;
+
     return (
       <div className="container">
-        <Paper 
+        <Paper
           zDepth={2}
           className="login-container"
         >
           <h2>Markdown Pad Login</h2>
           <TextField
             floatingLabelText="Username"
-            errorText="Please enter your username"
-            underlineFocusStyle={{borderColor: "#364459"}}
-            floatingLabelFocusStyle={{color: "#7589a3"}}
+            name="username"
+            value={username}
+            errorText={username.length > 0 ? null : "Please enter your username"}
+            onChange={this.handleOnChange}
+            underlineFocusStyle={{ borderColor: "#364459" }}
+            floatingLabelFocusStyle={{ color: "#7589a3" }}
             fullWidth={true}
-            />
+          />
           <br />
           <TextField
             floatingLabelText="Password"
             type="password"
-            underlineFocusStyle={{borderColor: "#364459"}}
-            floatingLabelFocusStyle={{color: "#7589a3"}}
+            name="password"
+            value={password}
+            errorText={password.length > 0 ? null : "Please enter your password"}
+            onChange={this.handleOnChange}
+            underlineFocusStyle={{ borderColor: "#364459" }}
+            floatingLabelFocusStyle={{ color: "#7589a3" }}
             fullWidth={true}
           />
           <br />
           <br />
-          <RaisedButton 
-            label="Sign In" 
+          <RaisedButton
+            label="Sign In"
             fullWidth={true}
             backgroundColor="#364459"
             labelColor="white"
+            onClick={this.handleOnClick}
           />
           <br />
           <Link to="/signup">
-            <FlatButton 
-              label="Register" 
-              fullWidth={true}              
+            <FlatButton
+              label="Register"
+              fullWidth={true}
             />
           </Link>
-          </Paper>
+        </Paper>
       </div>
     );
   }

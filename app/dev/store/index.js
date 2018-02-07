@@ -1,14 +1,14 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import rootReducer from "./reducer";
+const { logger } = require(`redux-logger`);
 
-const middlewares = [thunk];
+const middlewares = [logger, thunk];
 
-if (process.env.NODE_ENV === `development`) {
-  const { logger } = require(`redux-logger`);
-  middlewares.push(logger);
-}
-/* end of React-Router-Redux */
+// if (process.env.NODE_ENV === `development`) {
+//   const { logger } = require(`redux-logger`);
+//   middlewares.push(logger);
+// }
 
 const initialState = {};
 const enhancers = [];

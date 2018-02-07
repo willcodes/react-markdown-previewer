@@ -9,7 +9,7 @@ let dev = path.resolve(__dirname, "app/dev");
 let web = path.resolve(__dirname, "app/web");
 
 let config = {
-  entry: dev + "/index.js",
+  entry: ['babel-polyfill', dev + "/index.js"],
   output: {
     path: web,
     filename: "app.bundle.js"
@@ -20,7 +20,7 @@ let config = {
         include: dev,
         loader: "babel-loader",
         query: {
-          presets: ["react", "es2015", "stage-2"]
+          presets: [ "react", "es2015", "stage-0" ]
         }
       }
     ]
