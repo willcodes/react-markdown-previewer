@@ -32,6 +32,7 @@ class UserRouter extends React.Component {
 
         var onError = (error) => {
             dispatch(userActions.setUserValidation(false))
+            localStorage.removeItem("token");
             this.props.history.push("/login");
             console.log('fail', error)
         }
