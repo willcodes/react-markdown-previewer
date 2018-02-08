@@ -11,6 +11,10 @@ import * as userActions from "../store/user/actions";
 
 class LoginContainer extends React.Component {
 
+  componentDidMount() {
+    if (localStorage.getItem("token")) this.props.history.push("/user/dashboard")
+  }
+
   handleLogin = async (data) => {
     const { dispatch } = this.props;
 
@@ -19,7 +23,7 @@ class LoginContainer extends React.Component {
       if (res.status === 200 && res.data.success) {
         dispatch(userActions.setLoginStatus(USER_LOGIN_SUCCESS))
         dispatch(userActions.setUserValidation(true))
-        localStorage.setItem("token",res.data.token);
+        localStorage.setItem("token", res.data.token);
         console.log('success', res)
       }
       else {
