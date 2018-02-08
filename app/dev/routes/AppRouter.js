@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import Editor from "../components/Editor";
+import Editor from "../components/Editor/Editor";
 import LoginContainer from "../containers/LoginContainer";
 import SignUpContainer from "../containers/SignUpContainer";
 

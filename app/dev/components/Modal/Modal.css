@@ -1,0 +1,18 @@
+.modal-container {
+  text-align: center; }
+
+.modal-container pre {
+  background: #eee;
+  padding: 15px 20px;
+  width: 80%;
+  margin: 20px auto; }
+
+.modal-container .cancel-btn {
+  color: #424242 !important; }
+
+.copyButton {
+  background: #424242;
+  color: white;
+  font-size: 12px;
+  padding: 10px;
+  border: none; }

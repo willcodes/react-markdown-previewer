@@ -4,6 +4,8 @@ import FlatButton from "material-ui/FlatButton";
 import RaisedButton from "material-ui/RaisedButton";
 import Dialog from "material-ui/Dialog";
 
+import "./Modal.css"
+
 export default class Modal extends React.Component {
   actions = [
     <FlatButton

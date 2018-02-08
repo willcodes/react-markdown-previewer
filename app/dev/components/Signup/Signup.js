@@ -5,6 +5,8 @@ import Paper from "material-ui/Paper";
 import { orange500, blue900 } from "material-ui/styles/colors";
 import { Link } from "react-router-dom";
 
+import "./Signup.css"
+
 const inputStyles = {
   errorStyle: {
     color: "red"

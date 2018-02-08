@@ -1,14 +1,14 @@
 //main logic for editor lives here.
 
 import React from "react";
-import Modal from "./Modal";
-import Nav from "./Nav";
+import Modal from "../Modal/Modal";
+import Nav from "../Nav/Nav";
 import marked from "marked";
 import fileSave from "file-saver";
-import config from "../config";
+import config from "../../config";
 import Dialog from 'material-ui/Dialog';
 
-//temporary, must move to config
+import "./Editor.css"
 
 class Editor extends React.Component {
   constructor(props) {

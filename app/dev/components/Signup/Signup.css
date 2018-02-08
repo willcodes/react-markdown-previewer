@@ -1,0 +1,8 @@
+.login-container, .registration-container {
+  width: 500px;
+  margin: 0 auto;
+  padding: 50px 80px; }
+
+.login-container h2, .registration-container h2 {
+  text-align: center;
+  color: #333; }

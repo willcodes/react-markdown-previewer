@@ -1,5 +1,5 @@
 import React from "react";
-import Login from "../components/Login";
+import Login from "../components/Login/Login";
 import { connect } from "react-redux"
 import { getUser } from "../store/reducer";
 import { USER_LOGIN_SUCCESS, USER_LOGIN_PENDING, USER_LOGIN_FAILED } from "../constants"

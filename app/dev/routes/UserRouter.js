@@ -40,7 +40,6 @@ class UserRouter extends React.Component {
         try {
             const token = localStorage.getItem('token');
             if (!token) throw new Error("no token");
-            console.log(token)
             const success = await axios.get(`${config.base_url}/api/validate`, { headers: { Authorization:`Bearer ${token}` } });
             onSuccess(success);
         } catch (error) {

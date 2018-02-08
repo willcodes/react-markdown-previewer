@@ -21,6 +21,8 @@ const inputStyles = {
   },
 };
 
+import "./Login.css"
+
 
 
 export default class Login extends React.Component {

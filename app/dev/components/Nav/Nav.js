@@ -8,6 +8,8 @@ import ContentSave from "material-ui/svg-icons/content/save";
 import AccountCircle from "material-ui/svg-icons/action/account-circle";
 import { withRouter } from "react-router-dom";
 
+import "./Nav.css"
+
 const Nav = ({
   saveFile,
   markdownFile,
