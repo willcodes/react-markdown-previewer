@@ -19,18 +19,18 @@ const PublicRouter = require("./server/routes/PublicRouter"),
   AuthRouter = require("./server/routes/AuthRouter"),
   AuthMiddleware = require("./server/middleware/AuthMiddleware"),
   PassportStrategy = require("./server/passport/PassportStrategy")
-  
+
 
 dotenv.config();
 
 //just for dev localhost, must remove for prod
 app.use(cors({ origin: true, credentials: true }));
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
   done(null, user);
 });
 
-passport.deserializeUser(function(user, done) {
+passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
@@ -45,17 +45,23 @@ app.use(
   })
 );
 
-app.get("/favicon.ico", function(req, res) {});
+app.get("/favicon.ico", function (req, res) { });
 app.use(bodyParser.json());
 
 app.use("/api/public", PublicRouter);
 app.use("/api/users", UserRouter);
 app.use("/api/login", AuthRouter);
+app.use("/api/validate", AuthMiddleware, (req, res) => {
+  res.status(200).send({
+    success: true,
+    message: 'valid token'
+  })
+});
 app.use("/api/dashboard", AuthMiddleware, (req, res) => {
   console.log('yoyoyoyooyo');
   res.sendStatus(200);
 })
 
-app.listen(port, function() {
+app.listen(port, function () {
   console.log("Server running on port " + port);
 });

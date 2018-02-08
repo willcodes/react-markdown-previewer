@@ -10,25 +10,55 @@ import {
 } from "react-router-dom";
 import { connect } from 'react-redux'
 import { getUser } from "../store/reducer";
+import  axios from "axios"
+import config from "../config"
 
 import * as userActions from "../store/user/actions";
 
 class UserRouter extends React.Component {
-    componentDidMount() {
-        console.log(this.props)
+
+    validateUser = async () => {
+        const { dispatch } = this.props;
+        var onSuccess = (res) => {
+            if (res.status === 200 && res.data.success) {
+                dispatch(userActions.setUserValidation(true))
+                console.log('hit')
+            }
+            else {
+                dispatch(userActions.setUserValidation(false))
+                console.log('hello', res)
+            }
+        }
+
+        var onError = (error) => {
+            dispatch(userActions.setUserValidation(false))
+            this.props.history.push("/login");
+            console.log('fail', error)
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) throw new Error("no token");
+            console.log(token)
+            const success = await axios.get(`${config.base_url}/api/validate`, { headers: { Authorization:`Bearer ${token}` } });
+            onSuccess(success);
+        } catch (error) {
+            onError(error);
+        }
+    }
+
+    componentWillMount() {
+        this.validateUser();
     }
 
     render() {
         const { userValidated } = this.props.user;
-        return (
+        return userValidated ? (
             <div>
-                {!userValidated ? <Redirect to="/login" /> : (
-                    <div>
-                        <Route exact path="/user" render={() => <div>profile page</div>} />
-                        <Route path="/user/dashboard" render={() => <div>dashboard page</div>} />
-                    </div>)}
+                <Route exact path="/user" render={() => <div>profile page</div>} />
+                <Route path="/user/dashboard" render={() => <div>dashboard page</div>} />
             </div>
-        );
+        ) : <div>loading</div>;
     }
 }
 

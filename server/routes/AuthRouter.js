@@ -18,8 +18,5 @@ AuthRouter.route("/")
       }
     })(req, res, next)
   )
-  .get((req, res, next) => {
-    res.status(200).send({ success: true });
-  });
 
 module.exports = AuthRouter;

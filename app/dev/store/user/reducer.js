@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import { SET_LOGIN_STATUS, VALIDATE_USER } from "../../constants";
 
 const defaultStatus = {
-  userValidated:true,
+  userValidated:false,
   loginStatus:null
 }
 
