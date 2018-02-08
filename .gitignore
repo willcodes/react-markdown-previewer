@@ -2,3 +2,4 @@ node_modules/
 app/web/
 .env
 private.key
+app/dev/components/**/*.css
