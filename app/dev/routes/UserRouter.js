@@ -10,10 +10,12 @@ import {
 } from "react-router-dom";
 import { connect } from 'react-redux'
 import { getUser } from "../store/reducer";
-import  axios from "axios"
+import axios from "axios"
 import config from "../config"
 
 import * as userActions from "../store/user/actions";
+
+import DashboardContainer from "../containers/DashboardContainer";
 
 class UserRouter extends React.Component {
 
@@ -40,7 +42,7 @@ class UserRouter extends React.Component {
         try {
             const token = localStorage.getItem('token');
             if (!token) throw new Error("no token");
-            const success = await axios.get(`${config.base_url}/api/validate`, { headers: { Authorization:`Bearer ${token}` } });
+            const success = await axios.get(`${config.base_url}/api/validate`, { headers: { Authorization: `Bearer ${token}` } });
             onSuccess(success);
         } catch (error) {
             onError(error);
@@ -56,7 +58,7 @@ class UserRouter extends React.Component {
         return userValidated ? (
             <div>
                 <Route exact path="/user" render={() => <div>profile page</div>} />
-                <Route path="/user/dashboard" render={() => <div>dashboard page</div>} />
+                <Route path="/user/dashboard" render={() => <DashboardContainer />} />
             </div>
         ) : <div>loading</div>;
     }

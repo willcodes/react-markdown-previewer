@@ -5,6 +5,7 @@ import FlatButton from "material-ui/FlatButton";
 import Paper from 'material-ui/Paper';
 import { orange500, blue900 } from "material-ui/styles/colors";
 import { Link } from "react-router-dom";
+import { USER_LOGIN_FAILED, USER_LOGIN_PENDING } from "../../constants"
 
 const inputStyles = {
   errorStyle: {
@@ -53,6 +54,7 @@ export default class Login extends React.Component {
   render() {
 
     const { username, password } = this.state;
+    const { userValidated, loginStatus } = this.props.user;
 
     return (
       <div className="container">
@@ -85,6 +87,8 @@ export default class Login extends React.Component {
           />
           <br />
           <br />
+          {loginStatus === USER_LOGIN_FAILED && <p>incorrect username or password </p>}
+          {loginStatus === USER_LOGIN_PENDING && <p>loading</p>}
           <RaisedButton
             label="Sign In"
             fullWidth={true}
@@ -92,6 +96,7 @@ export default class Login extends React.Component {
             labelColor="white"
             onClick={this.handleOnClick}
           />
+          {this.state.error && <p>this.state.error</p>}
           <br />
           <Link to="/signup">
             <FlatButton

@@ -20,6 +20,7 @@ module.exports = (req, res, next) => {
       .then(rows => {
         if (!rows || rows.length < 1) return res.status(401).end();
         if(rows[0].username != username || rows[0].id != id) return res.status(401).end()
+        res.locals.id = id;
         return next();
       });
   });

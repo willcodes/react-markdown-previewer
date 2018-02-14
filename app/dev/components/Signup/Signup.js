@@ -29,7 +29,8 @@ export default class Signup extends React.Component {
     username: "",
     usernameIsValid: false,
     password: "",
-    passwordIsValid: false
+    passwordIsValid: false,
+    error: ""
   };
 
   handleOnChange = e => {
@@ -70,6 +71,19 @@ export default class Signup extends React.Component {
     var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   };
+
+  handleOnSubmit = (e) => {
+    e.preventDefault();
+    const { username, password, email, passwordIsValid, usernameIsValid, emailIsValid } = this.state;
+    if (usernameIsValid, passwordIsValid, emailIsValid) {
+      this.props.handleCreateUser({ username, password, email }).then(res => {
+        console.log(res)
+        if (res.error) {
+          this.setState({ error: "EROOR" });
+        }
+      });
+    }
+  }
 
   render() {
     const {
@@ -125,8 +139,9 @@ export default class Signup extends React.Component {
             fullWidth={true}
             backgroundColor="#364459"
             labelColor="white"
-            onSubmit={e => e.preventDefault()}
+            onClick={this.handleOnSubmit}
           />
+          {this.state.error && <p>Oops, username has already been taken</p>}
         </Paper>
       </div>
     );

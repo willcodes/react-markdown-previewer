@@ -22,7 +22,7 @@ PublicRouter.route("/:id").get((req, res) => {
 PublicRouter.route("/save").post((req, res) => {
   client.set(req.body.docName, req.body.docContent, (err, reply) => {
     if (err) {
-      res.status(500).send(err);
+      res.status(400).send(err);
       console.log(err);
     } else {
       res.send(reply);

@@ -18,7 +18,8 @@ const PublicRouter = require("./server/routes/PublicRouter"),
   UserRouter = require("./server/routes/UserRouter"),
   AuthRouter = require("./server/routes/AuthRouter"),
   AuthMiddleware = require("./server/middleware/AuthMiddleware"),
-  PassportStrategy = require("./server/passport/PassportStrategy")
+  PassportStrategy = require("./server/passport/PassportStrategy"),
+  DocumentRouter = require("./server/routes/DocumentRouter")
 
 
 dotenv.config();
@@ -57,10 +58,7 @@ app.use("/api/validate", AuthMiddleware, (req, res) => {
     message: 'valid token'
   })
 });
-app.use("/api/dashboard", AuthMiddleware, (req, res) => {
-  console.log('yoyoyoyooyo');
-  res.sendStatus(200);
-})
+app.use("/api/documents", AuthMiddleware, DocumentRouter);
 
 app.listen(port, function () {
   console.log("Server running on port " + port);

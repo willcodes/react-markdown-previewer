@@ -30,8 +30,8 @@ const Nav = ({
           <ContentSave color="#ececec" />
         </IconButton>
         <IconMenu
-          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'right', vertical: 'top'}}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'right', vertical: 'top' }}
           iconButtonElement={
             <IconButton>
               <FileFileDownload color="#ececec" />
@@ -44,22 +44,12 @@ const Nav = ({
           />
           <MenuItem primaryText="Download HTML" onClick={() => saveFile(htmlFile)} />
         </IconMenu>
-        <IconMenu
-          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-          targetOrigin={{horizontal: 'right', vertical: 'top'}}
-          iconButtonElement={
-            <IconButton>
-              <AccountCircle color="#ececec" />
-            </IconButton>
-          }
-        >
-            <MenuItem
-              primaryText="Login"
-              onClick={() => history.push("/login")}
-              />
-            <MenuItem primaryText="View Profile" />
-            <MenuItem primaryText="Logout" />
-        </IconMenu>
+
+        <IconButton>
+          <AccountCircle color="#ececec"
+            onClick={() => history.push("/login")}
+          />
+        </IconButton>
       </div>
     </nav>
   );

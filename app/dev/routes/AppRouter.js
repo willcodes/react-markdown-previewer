@@ -26,7 +26,6 @@ export default class AppRouter extends React.Component {
             <Route path="/pads/:id" component={Editor} {...this.props} />
             <Route path="/login" component={LoginContainer} />
             <Route path="/signup" component={SignUpContainer} />
-
             <Route path="/user" component={UserRouter} />
           </div>
         </Router>

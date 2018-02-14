@@ -21,9 +21,9 @@ class LoginContainer extends React.Component {
     dispatch(userActions.setLoginStatus(USER_LOGIN_PENDING))
     var onSuccess = (res) => {
       if (res.status === 200 && res.data.success) {
+        localStorage.setItem("token", res.data.token);
         dispatch(userActions.setLoginStatus(USER_LOGIN_SUCCESS))
         dispatch(userActions.setUserValidation(true))
-        localStorage.setItem("token", res.data.token);
         console.log('success', res)
       }
       else {
@@ -51,7 +51,7 @@ class LoginContainer extends React.Component {
     const { loginStatus, userValidated } = this.props.user;
     const { history } = this.props
     if (loginStatus === USER_LOGIN_SUCCESS || userValidated) return <Redirect to="/user/dashboard" />;
-    else return <Login handleLogin={this.handleLogin} />
+    else return <Login handleLogin={this.handleLogin} user={this.props.user} />
   }
 }
 
