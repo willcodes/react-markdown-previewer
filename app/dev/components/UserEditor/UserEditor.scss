@@ -1,0 +1,39 @@
+.flex-container {
+    display: flex;
+    justify-content: space-around;
+    margin: auto;
+    width: 100%;
+}
+.container {
+    width: 100%;
+    margin: auto;
+    padding: 50px 35px;
+}
+
+.half-container {
+    min-height: 83vh;
+    background: #fff;
+    padding: 40px 50px;
+    width: 50vw;
+    border: 1px solid #ddd;
+    overflow: scroll;
+    word-wrap: break-word;
+}
+
+.preview-container {
+    margin-right: 20px;
+}
+
+.preview-container a {
+    color: #4078c0;
+}
+
+.btn-control {
+    margin: 15px auto;
+    width: 350px;
+}
+
+button {
+    margin: 15px;
+    text-align: center;
+}

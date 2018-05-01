@@ -9,6 +9,12 @@ import config from "../../config";
 import Dialog from 'material-ui/Dialog';
 
 import "./Editor.css"
+import brace from 'brace';
+import AceEditor from 'react-ace';
+ 
+import 'brace/mode/markdown';
+import 'brace/theme/github';
+//temporary, must move to config
 
 class Editor extends React.Component {
   constructor(props) {
@@ -193,14 +199,19 @@ class Editor extends React.Component {
               className="half-container preview-container"
               dangerouslySetInnerHTML={output(this.state.value)}
             />
-            <textarea
+            <AceEditor
               className="half-container"
-              rows="20"
-              cols="50"
+              mode="markdown"
+              theme="github"
               value={value}
               onKeyDown={event => this.handleKeyDown(event)}
-              onChange={event => this.setState({ value: event.target.value })}
-            />
+              onChange={event => this.setState({ value: event })}
+              name="editor"
+              fontSize={13}
+              width="50vw"
+              wrapEnabled={true}
+              showPrintMargin={false}
+            />,
           </div>
         </div>
       </main>

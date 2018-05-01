@@ -26,15 +26,6 @@ export default class Modal extends React.Component {
         open={this.props.open}
         onRequestClose={this.props.close}
       >
-        <pre>{window.location.href}</pre>
-        <CopyToClipboard text={window.location.href}>
-          <RaisedButton
-            className="copy-link-btn"
-            label="Copy link"
-            labelColor="#eee"
-            backgroundColor="#364459"
-          />
-        </CopyToClipboard>
       </Dialog>
     );
   }
