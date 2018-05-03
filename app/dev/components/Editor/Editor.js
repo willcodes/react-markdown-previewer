@@ -46,7 +46,6 @@ class Editor extends React.Component {
     const { id } = this.props.match.params;
 
     if (id) {
-      console.log(id, "hit");
       var request = new Request(
         `${config.base_url + config.public_route}/${id}`,
         {
@@ -211,7 +210,7 @@ class Editor extends React.Component {
               width="50vw"
               wrapEnabled={true}
               showPrintMargin={false}
-            />,
+            />
           </div>
         </div>
       </main>

@@ -25,7 +25,7 @@ const Nav = ({
         Markdown Pad
       </a>
       <div>
-        {timeDiff != null && <p>last saved {timeDiff}</p>}
+        {timeDiff != null && <p style={{color:"white"}}>last saved {timeDiff}</p>}
         <IconButton onClick={saveDocument}>
           <ContentSave color="#ececec" />
         </IconButton>

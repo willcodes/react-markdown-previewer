@@ -6,22 +6,29 @@ import Nav from "../Nav/Nav";
 import marked from "marked";
 import fileSave from "file-saver";
 import config from "../../config";
+import Title from "../Title/Title";
 import Dialog from "material-ui/Dialog";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 import "./UserEditor.css";
+import brace from "brace";
+import AceEditor from "react-ace";
+
+import "brace/mode/markdown";
+import "brace/theme/github";
 
 class UserEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      title: "",
       value: "",
       modelText: "",
       modalOpen: false,
       lastSaved: null,
       modalShouldShow: false,
-      showCopyButton: true,
+      showCopyButton: true
     };
   }
   componentDidMount() {
@@ -30,11 +37,16 @@ class UserEditor extends React.Component {
       lastSaved: null,
       modalShouldShow: id ? true : false
     });
+
+    setInterval(this.save, 60000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.save);
   }
 
   componentWillMount() {
     const { id } = this.props.location.state;
-    console.log(id);
     axios
       .get(`${config.base_url}/api/documents/user/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -42,7 +54,8 @@ class UserEditor extends React.Component {
       .then(res => {
         if (res.status == 200) {
           this.setState({
-            value: res.data.content
+            value: res.data.content,
+            title: res.data.title
           });
         }
       })
@@ -56,17 +69,6 @@ class UserEditor extends React.Component {
       });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { id } = this.props.location.state;
-    fetch(this.save())
-      .then(res => res)
-      .then(() => {
-        this.setState({
-          lastSaved: Date.now()
-        });
-      });
-  }
-
   handleKeyDown = event => {
     let charCode = String.fromCharCode(event.which).toLocaleLowerCase();
     if (
@@ -76,6 +78,11 @@ class UserEditor extends React.Component {
       event.preventDefault();
       this.saveDocument();
     }
+  };
+
+  saveDocument = () => {
+    this.save();
+    this.handleModalOpen();
   };
 
   handleModalOpen = () => {
@@ -94,32 +101,34 @@ class UserEditor extends React.Component {
     fileSave.saveAs(file);
   };
 
-  save = () => {
+  save = async () => {
     const { id } = this.props.location.state;
-    return new Request(`${config.base_url + config.public_route}/save`, {
-        method: "POST",
-        headers: new Headers({
-            "Content-Type": "application/json"
-        }),
-        body: JSON.stringify({
-            docName: id,
-            docContent: this.state.value
-        })
+    const req = new Request(`${config.base_url}/api/documents/user/save`, {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }),
+      body: JSON.stringify({
+        id: id,
+        content: this.state.value,
+        title: this.state.title
+      })
     });
-  };
-
-  saveDocument = () => {
-    const { id } = this.props.location.state;
     if (id) {
-      fetch(this.save())
-        .then(res => res.json())
-        .then(() => {
-          this.setState({
-            modalText: "Your document has been saved!",
-            lastSaved: Date.now()
-          });
-          this.handleModalOpen();
+      try {
+        const res = await fetch(req);
+        const data = await res.json();
+
+        this.setState({
+          modalText: "Your document has been saved!",
+          lastSaved: Date.now()
         });
+      } catch (e) {
+        this.setState({
+          modalText: "Error Saving Document."
+        });
+      }
     }
   };
 
@@ -139,7 +148,7 @@ class UserEditor extends React.Component {
       type: "text/plain;charset=utf-8"
     });
 
-    const { modalText, modalShouldShow, value, err } = this.state;
+    const { modalText, modalShouldShow, value, err, title } = this.state;
 
     return (
       <main>
@@ -156,18 +165,27 @@ class UserEditor extends React.Component {
           lastSave={this.state.lastSaved}
         />
         <div className="container">
+          <Title
+            title={title}
+            onChange={event => this.setState({ title: event.target.value })}
+          />
           <div className="flex-container">
             <div
               className="half-container preview-container"
               dangerouslySetInnerHTML={output(this.state.value)}
             />
-            <textarea
+            <AceEditor
               className="half-container"
-              rows="20"
-              cols="50"
+              mode="markdown"
+              theme="github"
               value={value}
               onKeyDown={event => this.handleKeyDown(event)}
-              onChange={event => this.setState({ value: event.target.value })}
+              onChange={event => this.setState({ value: event })}
+              name="editor"
+              fontSize={13}
+              width="50vw"
+              wrapEnabled={true}
+              showPrintMargin={false}
             />
           </div>
         </div>
