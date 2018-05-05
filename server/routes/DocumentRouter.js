@@ -12,7 +12,7 @@ DocumentRouter.route("/user").get((req, res) => {
     });
 });
 
-DocumentRouter.route("/user/:id").get((req, res) => {
+DocumentRouter.route("/:id").get((req, res) => {
   const user_id = res.locals.id;
   const document_id = req.params.id;
   db("documents")
@@ -32,7 +32,7 @@ DocumentRouter.route("/user/:id").get((req, res) => {
     });
 });
 
-DocumentRouter.route("/user/save").post((req, res) => {
+DocumentRouter.route("/save").post((req, res) => {
   const user_id = res.locals.id;
   const { id, content, title } = req.body;
 
@@ -64,24 +64,49 @@ DocumentRouter.route("/user/save").post((req, res) => {
     });
 });
 
-DocumentRouter.route("/user/add").post((req, res) => {
+DocumentRouter.route("/add").post((req, res) => {
   const { id } = res.locals;
-  const { title, content } = req.body;
+  const { title = "Untitled Document", content = "" } = req.body;
   db("documents")
     .insert({
       user_id: id,
       title,
       content
     })
+    .returning("id")
     .then(data => {
       res
         .status(200)
-        .send({ success: true, message: "added document successfully" });
+        .send({ success: true, message: "added document successfully", data });
     })
     .catch(err => {
       res
         .status(500)
         .send({ success: false, message: "error with adding document" });
+    });
+});
+
+DocumentRouter.route("/delete").post((req, res) => {
+  const { id } = res.locals;
+  const { document_id } = req.body;
+  db("documents")
+    .select(["id"])
+    .where({ user_id: id })
+    .then(data => {
+      if (data[0]) {
+        db("documents")
+          .where("id", document_id)
+          .del()
+          .then(data => {
+            res
+              .status(200)
+              .send({ message: "deleted successfully", success: true });
+          });
+      } else {
+        res
+        .status(401)
+        .send({ message: "Unauthorized to modify document", success: false });
+      }
     });
 });
 

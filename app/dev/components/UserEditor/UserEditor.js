@@ -48,7 +48,7 @@ class UserEditor extends React.Component {
   componentWillMount() {
     const { id } = this.props.location.state;
     axios
-      .get(`${config.base_url}/api/documents/user/${id}`, {
+      .get(`${config.base_url}/api/documents/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       })
       .then(res => {
@@ -103,7 +103,7 @@ class UserEditor extends React.Component {
 
   save = async () => {
     const { id } = this.props.location.state;
-    const req = new Request(`${config.base_url}/api/documents/user/save`, {
+    const req = new Request(`${config.base_url}/api/documents/save`, {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json",
